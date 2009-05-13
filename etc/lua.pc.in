@@ -26,7 +26,7 @@ Name: Lua
 Description: An Extensible Extension Language
 Version: ${R}
 Requires: 
-Libs: -L${libdir} -llua -lm
+Libs: -L${libdir} -llua @LUA_LIBS@
 Cflags: -I${includedir}
 
 # (end of lua.pc)
