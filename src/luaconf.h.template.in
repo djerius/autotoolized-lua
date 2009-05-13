@@ -11,6 +11,18 @@
 #include <limits.h>
 #include <stddef.h>
 
+/*
+** =================
+** Autotoolification
+** =================
+*/
+
+/** autotoolize patch **/
+@POSIX_DEFS@
+@LUA_DL_DEFS@
+@LUA_BUILD_AS_DLL_DEFS@
+@READLINE_DEFS@
+/** autotoolize patch **/
 
 /*
 ** ==================================================================
@@ -94,9 +106,12 @@
 	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
 
 #else
-#define LUA_ROOT	"/usr/local/"
-#define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
-#define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
+
+/** autotoolize patch **/
+#define LUA_LDIR	"%lua_datadir%/lua/5.1/"
+#define LUA_CDIR	"%lua_libdir%/lua/5.1/"
+/** autotoolize patch **/
+
 #define LUA_PATH_DEFAULT  \
 		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
 		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"
