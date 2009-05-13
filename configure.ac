@@ -20,10 +20,10 @@ LUA_LIBS="-lm"
 
 # Check for readline
 READLINE_DEFS="#undef LUA_USE_READLINE"
-if test "x$use_readline" == "xyes"; then
+if test "x$use_readline" = "xyes"; then
   AC_CHECK_LIB([readline], [readline], [], [use_readline=no])
   AC_CHECK_HEADERS([readline/readline.h readline/history.h], [], [use_readline=no])
-  if test "x$use_readline" == "xno"; then
+  if test "x$use_readline" = "xno"; then
     AC_MSG_WARN([readline headers could not be found, disabling readline support])
   else
     READLINE_DEFS="#define LUA_USE_READLINE"
@@ -42,12 +42,12 @@ POSIX_DEFS="#undef LUA_USE_POSIX"
 LUA_DL_DEFS="#undef LUA_USE_DLOPEN"
 LUA_BUILD_AS_DLL_DEFS="#undef LUA_BUILD_AS_DLL"
 
-if test "x$use_os" == "xwin32"; then
+if test "x$use_os" = "xwin32"; then
   LUA_BUILD_AS_DLL_DEFS="#define LUA_BUILD_AS_DLL"
-elif test "x$use_os" == "xmacosx"; then
+elif test "x$use_os" = "xmacosx"; then
   POSIX_DEFS="#define LUA_USE_POSIX"
   LUA_DL_DEFS="#define LUA_DL_DYLD"
-elif test "x$use_os" == "xposix"; then
+elif test "x$use_os" = "xposix"; then
   POSIX_DEFS="#define LUA_USE_POSIX"
   LUA_DL_DEFS="#define LUA_DL_DLOPEN"
   LUA_LIBS="$LUA_LIBS -ldl"
