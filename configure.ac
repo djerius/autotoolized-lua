@@ -35,6 +35,7 @@ AC_SUBST(READLINE_DEFS)
 case "$host" in
   *-mingw*)  use_os=win32  ;;
   *-darwin*) use_os=macosx ;;
+  *-freebsd*) use_os=freebsd ;;
   *-hpux*)   use_os=hpux   ;;
   *)         use_os=posix  ;;
 esac
@@ -48,6 +49,9 @@ if test "x$use_os" = "xwin32"; then
 elif test "x$use_os" = "xmacosx"; then
   POSIX_DEFS="#define LUA_USE_POSIX"
   LUA_DL_DEFS="#define LUA_DL_DYLD"
+elif test "x$use_os" = "xfreebsd"; then
+  POSIX_DEFS="#define LUA_USE_POSIX"
+  LUA_DL_DEFS="#define LUA_DL_DLOPEN"
 elif test "x$use_os" = "xhpux"; then
   POSIX_DEFS="#define LUA_USE_POSIX"
   LUA_DL_DEFS="#define LUA_DL_DLOPEN"
