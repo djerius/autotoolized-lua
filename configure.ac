@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Autotoolized Lua], [5.1], [], [lua-at])
+AC_INIT([Autotoolized Lua], [5.1-r2], [], [lua-at])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/lapi.c])

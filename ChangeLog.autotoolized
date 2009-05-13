@@ -1,0 +1,9 @@
+2007-01-03  Petri Lehtinen  <petri@digip.org>
+
+	* configure.ac: Release 2.
+	* Added file ChangeLog.autotoolized.
+
+2007-01-03  Reuben Thomas  <rrt@sc3d.org>
+
+	* src/Makefile.am: Removed reference to $(srcdir) in luaconf.h
+	rule to fix distcheck rule.
