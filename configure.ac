@@ -21,13 +21,13 @@ LUA_LIBS="-lm"
 # Check for readline
 READLINE_DEFS="#undef LUA_USE_READLINE"
 if test "x$use_readline" == "xyes"; then
-  AC_CHECK_LIB([readline], [readline], [use_readline=yes], [use_readline=no], [-lncurses])
+  AC_CHECK_LIB([readline], [readline], [use_readline=yes], [use_readline=no], [])
   AC_CHECK_HEADERS([readline/readline.h readline/history.h], [], [use_readline=no])
   if test "x$use_readline" == "xno"; then
     AC_MSG_WARN([readline headers could not be found, disabling readline support])
   else
     READLINE_DEFS="#define LUA_USE_READLINE"
-    READLINE_LIBS="$READLINE_LIBS -lreadline -lncurses"
+    READLINE_LIBS="$READLINE_LIBS -lreadline"
   fi
 fi
 AC_SUBST(READLINE_DEFS)
