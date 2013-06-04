@@ -12,7 +12,7 @@ original="lua-${version}"
 
 patched="lua-${version}-autotoolize"
 mkdir $patched
-GIT_DIR=$src/.git git archive HEAD | tar -C $patched -xf -
+GIT_DIR=$src/.git git archive HEAD | tar --exclude-vcs -C $patched -xf -
 (cd $patched && sh autogen.sh)
 
 diff -urN $original $patched | bzip2 -c > lua-${version}-autotoolize.patch.bz2
