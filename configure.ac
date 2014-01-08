@@ -67,6 +67,32 @@ AC_SUBST(LUA_BUILD_AS_DLL_DEFS)
 
 AC_SUBST(LUA_LIBS)
 
+VERSIONED_FILES=0
+AC_ARG_ENABLE(
+	[versioned-filenames],
+	[AS_HELP_STRING([--enable-versioned-filenames],
+	                [insert version (${LUA_MAJOR_VERSION}) into file and directory names [default=no]]
+			)
+	],
+	[
+	  AS_IF([test "$enableval" = yes],[VERSIONED_FILES=1] )
+	]
+)
+AM_CONDITIONAL([VERSIONED_FILES], [test $VERSIONED_FILES = 1])
+
+AM_COND_IF([VERSIONED_FILES],
+	[LUA_PC=lua${LUA_MAJOR_VERSION}.pc
+	 LUA_LIBNAME=lua${LUA_MAJOR_VERSION}
+	 includedir="$includedir/lua${LUA_MAJOR_VERSION}"
+	 ],
+	[LUA_PC=lua.pc
+	 LUA_LIBNAME=lua
+	]
+)
+
+AC_SUBST([LUA_PC])
+AC_SUBST([LUA_LIBNAME])
+
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/luaconf.h.template

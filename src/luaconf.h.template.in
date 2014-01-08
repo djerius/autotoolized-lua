@@ -97,13 +97,8 @@
 #else
 
 /** autotools-patch **/
-#define LUA_LDIR	"%lua_datadir%/lua/5.1/"
-#if defined __alpha__ || defined __ia64__ || defined __powerpc64__ || \
-    defined __s390x__ || defined __sparc64__ || defined __x86_64__
-#define LUA_CDIR	"/usr/lib64/lua/5.1/"
-#else
-#define LUA_CDIR	"/usr/lib/lua/5.1/"
-#endif
+#define LUA_LDIR	"%lua_datadir%"
+#define LUA_CDIR	"%lua_libdir%"
 /** autotools-patch **/
 
 #define LUA_PATH_DEFAULT  \
