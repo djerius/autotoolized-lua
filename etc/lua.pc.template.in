@@ -1,0 +1,16 @@
+V= @LUA_MAJOR_VERSION@
+R= @LUA_VERSION@
+prefix= @prefix@
+exec_prefix=@exec_prefix@
+libdir= @libdir@
+includedir=@includedir@
+
+INSTALL_LMOD= %lua_datadir%/lua/${V}
+INSTALL_CMOD= ${libdir}/lua/${V}
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -L${libdir} -llua @LUA_LIBS@
+Cflags: -I${includedir}

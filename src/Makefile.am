@@ -4,7 +4,7 @@ include_HEADERS = lua.h lualib.h lauxlib.h
 nodist_include_HEADERS = luaconf.h 
 
 lib_LTLIBRARIES = liblua.la
-liblua_la_LDFLAGS = -release 5.1
+liblua_la_LDFLAGS = -release @LUA_MAJOR_VERSION@
 liblua_la_LIBADD = -lm -ldl
 liblua_la_SOURCES = \
 	lapi.c lcode.c ldebug.c ldo.c ldump.c lfunc.c lgc.c llex.c lmem.c \
