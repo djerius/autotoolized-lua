@@ -1,12 +1,17 @@
 AM_CFLAGS = -Wall
 
 include_HEADERS = lua.h lualib.h lauxlib.h
-nodist_include_HEADERS = luaconf.h 
+nodist_include_HEADERS = luaconf.h
 
-lib_LTLIBRARIES = liblua.la
-liblua_la_LDFLAGS = -release @LUA_MAJOR_VERSION@
-liblua_la_LIBADD = -lm -ldl
-liblua_la_SOURCES = \
+lib_LTLIBRARIES = lib@LUA_LIBNAME@.la
+
+# encode version into library name one way or another
+if !VERSIONED_FILES
+lib@LUA_LIBNAME@_la_LDFLAGS = -release @LUA_MAJOR_VERSION@
+endif
+
+lib@LUA_LIBNAME@_la_LIBADD = -lm -ldl
+lib@LUA_LIBNAME@_la_SOURCES = \
 	lapi.c lcode.c ldebug.c ldo.c ldump.c lfunc.c lgc.c llex.c lmem.c \
 	lobject.c lopcodes.c lparser.c lstate.c lstring.c ltable.c ltm.c  \
 	lundump.c lvm.c lzio.c \
@@ -19,12 +24,12 @@ liblua_la_SOURCES = \
 bin_PROGRAMS = lua luac
 
 lua_SOURCES = lua.c
-lua_LDADD = liblua.la @LUA_LIBS@ @READLINE_LIBS@
-lua_DEPENDENCIES = liblua.la
+lua_LDADD = lib@LUA_LIBNAME@.la @LUA_LIBS@ @READLINE_LIBS@
+lua_DEPENDENCIES = lib@LUA_LIBNAME@.la
 
 luac_SOURCES = luac.c print.c
-luac_LDADD = liblua.la @LUA_LIBS@
-luac_DEPENDENCIES = liblua.la
+luac_LDADD = lib@LUA_LIBNAME@.la @LUA_LIBS@
+luac_DEPENDENCIES = lib@LUA_LIBNAME@.la
 
 # luac must be linked statically because it uses functions that
 # don't get exported to the shared object
@@ -36,9 +41,9 @@ CLEANFILES = luaconf.h
 
 readline_defs = @READLINE_DEFS@
 
-edit = 	sed \
-	  -e 's,%lua_datadir%,$(datadir),g' \
-	  -e 's,%lua_libdir%,$(libdir),g'
+edit = 	sed					\
+	  -e 's,%lua_datadir%,$(datadir)/lua/@LUA_MAJOR_VERSION@,g'	\
+	  -e 's,%lua_libdir%,$(libdir)/lua/@LUA_MAJOR_VERSION@,g'
 
 luaconf.h : $(builddir)/luaconf.h.template
 	rm -f luaconf.h luaconf.h.tmp
