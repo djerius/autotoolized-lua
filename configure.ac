@@ -1,6 +1,14 @@
 AC_PREREQ(2.59)
 AC_INIT([Autotoolized Lua], [5.1.5], [], [autotoolized-lua])
 
+# keep this separate from PACKAGE_VERSION, as that tracks
+# the autotooled version, not the actual Lua version
+AC_SUBST([LUA_VERSION],[5.1.5])
+AC_SUBST([LUA_MAJOR_VERSION],
+	[`AS_ECHO_N([$LUA_VERSION]) | [sed 's/[.][0-9]*$//']` ]
+)
+
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/lapi.c])
 
@@ -63,7 +71,7 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/luaconf.h.template
                  etc/Makefile
-                 etc/lua.pc
+                 etc/lua.pc.template
                  doc/Makefile
 		 test/Makefile])
 AC_OUTPUT
