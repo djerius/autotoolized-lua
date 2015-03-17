@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Autotoolized Lua], [5.1.5.01], [], [autotoolized-lua])
+AC_INIT([Autotoolized Lua], [5.1.5.02], [], [autotoolized-lua])
 
 # keep this separate from PACKAGE_VERSION, as that tracks
 # the autotooled version, not the actual Lua version
