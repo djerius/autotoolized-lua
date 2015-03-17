@@ -5,15 +5,33 @@ src=$(pwd)
 tmp=$(mktemp -d)
 cd $tmp
 
+GIT_DIR=$src/.git
+export GIT_DIR
+
 version=$(grep '#define LUA_RELEASE' $src/src/lua.h | sed 's/[^0-9.]//g')
-wget -q http://www.lua.org/ftp/lua-${version}.tar.gz
-tar -xzf lua-${version}.tar.gz
 original="lua-${version}"
 
-patched="lua-${version}-autotoolize"
+tag=$(git tag | grep -F ${version} | sort -r | head -1)
+if [ "x$tag" = x ]; then
+  echo >&2 "couldn't find a tag for lua version ${version}"
+  exit 1
+fi
+
+suffix=$(echo $tag | sed "s/$version[.]//")
+
+wget -q http://www.lua.org/ftp/lua-${version}.tar.gz
+tar -xzf lua-${version}.tar.gz
+
+patched="lua-${version}-autotoolize-r${suffix}"
 mkdir $patched
-GIT_DIR=$src/.git git archive HEAD | tar --exclude-vcs -C $patched -xf -
+
+git archive $tag				\
+| tar --exclude-vcs -C $patched -xf -
+
 (cd $patched && sh autogen.sh)
 
-diff -urN $original $patched | bzip2 -c > lua-${version}-autotoolize.patch.bz2
-echo "${tmp}/lua-${version}-autotoolize.patch.bz2"
+diff -urN $original $patched			\
+| bzip2 -c					\
+> $patched.patch.bz2
+
+echo "${tmp}/$patched.patch.bz2"
