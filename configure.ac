@@ -4,7 +4,7 @@ AC_INIT([Autotoolized Lua], [5.1.5.01], [], [autotoolized-lua])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/lapi.c])
 
-AM_INIT_AUTOMAKE([1.9 foreign])
+AM_INIT_AUTOMAKE([1.9 foreign serial-tests])
 
 AC_PROG_CC
 AC_PROG_LIBTOOL
