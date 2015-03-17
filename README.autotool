@@ -1,0 +1,39 @@
+Overview
+--------
+
+This is a re-packaging of the standard Lua 5.1.5 distribution using
+the GNU autotools.
+
+  * See the INSTALL.autotool file for generic information on using configure.
+  * See the INSTALL section below on specific instructions for this package.
+
+
+Installed Layout
+----------------
+
+The default directory layout doesn't lend itself well to installing
+multiple concurrent versions of Lua.  If configure is passed the
+--enable-versioned-filenames option it provides a layout which allows
+easy cohabitance of multiple versions.
+
+The difference between the two layouts is shown below; default
+on the left, versioned on the right.
+
+{prefix}					{prefix}
+|-- include					|-- include
+|   |-- lauxlib.h				|   `-- lua5.1
+|   |-- luaconf.h				|       |-- lauxlib.h
+|   |-- lua.h					|       |-- luaconf.h
+|   |-- lua.hpp					|       |-- lua.h
+|   `-- lualib.h				|       |-- lua.hpp
+|						|       `-- lualib.h
+`-- lib						`-- lib
+    |-- liblua.a				    |-- liblua5.1.a
+    |-- liblua.la				    |-- liblua5.1.la
+    |-- liblua-5.1.so				    |-- liblua5.1.so -> liblua5.1.so.0.0.0
+    |-- liblua.so -> liblua-5.1.so		    |-- liblua5.1.so.0 -> liblua5.1.so.0.0.0
+    |						    |-- liblua5.1.so.0.0.0
+    `-- pkgconfig				    `-- pkgconfig
+        `-- lua.pc				        `-- lua5.1.pc
+
+
