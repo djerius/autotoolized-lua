@@ -1,7 +1,6 @@
 AM_CFLAGS = -Wall
 
-include_HEADERS = lua.h lualib.h lauxlib.h
-nodist_include_HEADERS = luaconf.h
+include_HEADERS = lua.h luaconf.h lualib.h lauxlib.h lua.hpp
 
 lib_LTLIBRARIES = lib@LUA_LIBNAME@.la
 
@@ -11,15 +10,18 @@ lib@LUA_LIBNAME@_la_LDFLAGS = -release @LUA_MAJOR_VERSION@
 endif
 
 lib@LUA_LIBNAME@_la_LIBADD = -lm -ldl
-lib@LUA_LIBNAME@_la_SOURCES = \
-	lapi.c lcode.c ldebug.c ldo.c ldump.c lfunc.c lgc.c llex.c lmem.c \
-	lobject.c lopcodes.c lparser.c lstate.c lstring.c ltable.c ltm.c  \
-	lundump.c lvm.c lzio.c \
-	lauxlib.c lbaselib.c ldblib.c liolib.c lmathlib.c loslib.c ltablib.c \
-	lstrlib.c loadlib.c linit.c \
-	lapi.h ldebug.h lgc.h lmem.h lparser.h ltable.h lzio.h ldo.h llex.h \
-	lobject.h lstate.h ltm.h lundump.h lcode.h lfunc.h llimits.h lopcodes.h \
-	lstring.h lvm.h
+lib@LUA_LIBNAME@_la_SOURCES =							\
+	lapi.c lcode.c lctype.c ldebug.c ldo.c ldump.c lfunc.c lgc.c llex.c	\
+        lmem.c lobject.c lopcodes.c lparser.c lstate.c lstring.c ltable.c	\
+        ltm.c lundump.c lvm.c lzio.c						\
+										\
+	lauxlib.c lbaselib.c lbitlib.c lcorolib.c ldblib.c liolib.c		\
+	lmathlib.c loslib.c lstrlib.c ltablib.c loadlib.c linit.c		\
+										\
+	lapi.h lcode.h lctype.h ldebug.h ldo.h lfunc.h lgc.h llex.h llimits.h	\
+	lmem.h lobject.h lopcodes.h lparser.h lstate.h lstring.h ltable.h ltm.h	\
+	lundump.h lvm.h lzio.h
+
 
 bin_PROGRAMS = lua luac
 
@@ -27,7 +29,7 @@ lua_SOURCES = lua.c
 lua_LDADD = lib@LUA_LIBNAME@.la @LUA_LIBS@ @READLINE_LIBS@
 lua_DEPENDENCIES = lib@LUA_LIBNAME@.la
 
-luac_SOURCES = luac.c print.c
+luac_SOURCES = luac.c
 luac_LDADD = lib@LUA_LIBNAME@.la @LUA_LIBS@
 luac_DEPENDENCIES = lib@LUA_LIBNAME@.la
 
