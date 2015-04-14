@@ -97,8 +97,8 @@
 #else
 
 /** autotools-patch **/
-#define LUA_LDIR	"%lua_datadir%"
-#define LUA_CDIR	"%lua_libdir%"
+#define LUA_LDIR	"%lua_datadir%/"
+#define LUA_CDIR	"%lua_libdir%/"
 /** autotools-patch **/
 
 #define LUA_PATH_DEFAULT  \
