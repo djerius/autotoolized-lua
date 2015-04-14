@@ -17,7 +17,7 @@ AC_SUBST([LUA_MAJOR_VERSION],
 )
 
 
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_HEADERS([src/luaconf.h.template])
 AC_CONFIG_SRCDIR([src/lapi.c])
 
 AM_INIT_AUTOMAKE([1.9 foreign serial-tests])
@@ -30,6 +30,12 @@ AC_ARG_WITH(
   [AC_HELP_STRING([--with-readline], [Use readline for interpreter input [default=yes]])],
   [use_readline=$withval],
   [use_readline=yes]
+)
+AC_ARG_WITTH(
+  [ansi],
+  [AC_HELP_STRINTG([--with-ansi], [Avoid non-ANSI features]),
+  [],
+  [AC_DEFINE([LUA_ANSI], 1, [Avoid non-ANSI features])]
 )
 
 LUA_LIBS="-lm"
