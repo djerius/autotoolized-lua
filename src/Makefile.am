@@ -26,11 +26,11 @@ lib@LUA_LIBNAME@_la_SOURCES =							\
 bin_PROGRAMS = lua luac
 
 lua_SOURCES = lua.c
-lua_LDADD = lib@LUA_LIBNAME@.la @LUA_LIBS@ @READLINE_LIBS@
+lua_LDADD = lib@LUA_LIBNAME@.la
 lua_DEPENDENCIES = lib@LUA_LIBNAME@.la
 
 luac_SOURCES = luac.c
-luac_LDADD = lib@LUA_LIBNAME@.la @LUA_LIBS@
+luac_LDADD = lib@LUA_LIBNAME@.la
 luac_DEPENDENCIES = lib@LUA_LIBNAME@.la
 
 # luac must be linked statically because it uses functions that
@@ -40,8 +40,6 @@ luac_LDFLAGS = -static
 EXTRA_DIST = luaconf.h.template.in
 BUILT_SOURCES = luaconf.h
 CLEANFILES = luaconf.h
-
-readline_defs = @READLINE_DEFS@
 
 edit = 	sed					\
 	  -e 's,%lua_datadir%,$(datadir)/lua/@LUA_MAJOR_VERSION@,g'	\

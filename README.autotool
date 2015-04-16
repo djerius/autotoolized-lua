@@ -1,39 +1,118 @@
 Overview
---------
+========
 
-This is a re-packaging of the standard Lua 5.1.5 distribution using
+This is a re-packaging of the standard Lua 5.2.4 distribution using
 the GNU autotools.
+nnnn
+  * See the `INSTALL.autotool` file for generic information on using `configure`.
+  * See below for specific instructions for this package.
 
-  * See the INSTALL.autotool file for generic information on using configure.
-  * See the INSTALL section below on specific instructions for this package.
+Running `./configure --help` will list all of the available options.
 
 
-Installed Layout
-----------------
+Lua Configuration Options
+======================================
 
-The default directory layout doesn't lend itself well to installing
-multiple concurrent versions of Lua.  If configure is passed the
---enable-versioned-filenames option it provides a layout which allows
-easy cohabitance of multiple versions.
+Lua's configuration is done via C preprocessor macros in `src/luaconf.h`.
+
+Some of that has been automated, other bits have been exposed via `configure` options
+
+
+
+Automated Configuration
+-----------------------
+
+The following configuration options are determined automatically
+
+* `LUA_USE_LONGLONG`
+* `LUA_USE_STRTODHEX`
+* `LUA_USE_AFORMAT`
+* `LUA_USE_DLOPEN`
+
+
+`LUA_USE_POSIX`
+-------------
+
+`LUA_USE_POSIX` is an umbrella configuration option which enables a
+number of POSIX features.
+
+The _--enable-posix_ and _--disable-posix_ options are available to
+enable or disable these features.
+
+* if _--enable-posix_ is specified without an argument, POSIX features
+are unconditionally enabled.
+
+* if _--enable-posix = no_ or _--disable-posix_ is specified, POSIX
+features are unconditionally enabled.
+
+* if _--enable-posix = auto_ (the default), the following
+configuration options are enabled if supported by the host
+
+	* `LUA_USE_MKSTEMP`
+	* `LUA_USE_ISATTY`
+	* `LUA_USE_POPEN`
+	* `LUA_USE_ULONGJMP`
+	* `LUA_USE_GMTIME_R`
+
+	The remaining features covered by `LUA_USE_POSIX` are unconditionally enabled
+	if the host runs GNU/Linux or Mac OSX:
+
+	* lauxlib.c: child process state handling for `pclose`
+	* liolib.c: use of `fseeko` and `ftello`
+	* loslib.c: format options used in calls `to strftime`
+
+
+`LUA_ANSI`
+----------
+
+By default Lua will use non-ANSI features.  To disable this, specify
+_--disable-non-ansi_.
+
+`LUA_COMPAT_ALL`
+--------------
+
+This configuration option is exposed via _--enable-compat-all_ and
+_--disable-compat-all_.
+
+
+Additional Configuration
+========================
+
+Enabling `readline` in the standalone lua executable
+----------------------------------------------------
+
+By default if the `readline` library (or an API compatible library,
+such as `edit` or `editline` ) is available, it is used in the `lua`
+standalone interpreter.  To prevent this, specify _--disable-readline_.
+
+
+Multiple concurrent installations
+---------------------------------
+
+The default directory layout doesn't lend itself well to
+multiple concurrent versions of Lua.
+
+If configure is passed the _--enable-versioned-filenames_ option it
+provides a layout which allows easy cohabitance of multiple versions.
 
 The difference between the two layouts is shown below; default
 on the left, versioned on the right.
 
-{prefix}					{prefix}
-|-- include					|-- include
-|   |-- lauxlib.h				|   `-- lua5.1
-|   |-- luaconf.h				|       |-- lauxlib.h
-|   |-- lua.h					|       |-- luaconf.h
-|   |-- lua.hpp					|       |-- lua.h
-|   `-- lualib.h				|       |-- lua.hpp
-|						|       `-- lualib.h
-`-- lib						`-- lib
-    |-- liblua.a				    |-- liblua5.1.a
-    |-- liblua.la				    |-- liblua5.1.la
-    |-- liblua-5.1.so				    |-- liblua5.1.so -> liblua5.1.so.0.0.0
-    |-- liblua.so -> liblua-5.1.so		    |-- liblua5.1.so.0 -> liblua5.1.so.0.0.0
-    |						    |-- liblua5.1.so.0.0.0
-    `-- pkgconfig				    `-- pkgconfig
-        `-- lua.pc				        `-- lua5.1.pc
+    {prefix}                           {prefix}
+    |-- include                        |-- include
+    |   |-- lauxlib.h                  |   `-- lua5.2
+    |   |-- luaconf.h                  |       |-- lauxlib.h
+    |   |-- lua.h                      |       |-- luaconf.h
+    |   |-- lua.hpp                    |       |-- lua.h
+    |   `-- lualib.h                   |       |-- lua.hpp
+    |                                  |       `-- lualib.h
+    |-- lib                            `-- lib
+        |-- liblua.a                       |-- liblua5.2.a
+        |-- liblua.la                      |-- liblua5.2.la
+        |-- liblua-5.2.so                  |-- liblua5.2.so -> liblua5.2.so.0.0.0
+        |-- liblua.so -> liblua-5.2.so     |-- liblua5.2.so.0 -> liblua5.2.so.0.0.0
+        `-- pkgconfig                      |-- liblua5.2.so.0.0.0
+            `-- lua.pc                     `-- pkgconfig
+                                               `-- lua5.2.pc
 
 

@@ -17,6 +17,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "config.h"
 
 #if !defined(LUA_PROMPT)
 #define LUA_PROMPT		"> "
@@ -61,34 +62,73 @@
 ** lua_saveline defines how to "save" a read line in a "history".
 ** lua_freeline defines how to free a line read by lua_readline.
 */
-#if defined(LUA_USE_READLINE)
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#define lua_readline(L,b,p)	((void)L, ((b)=readline(p)) != NULL)
-#define lua_saveline(L,idx) \
-        if (lua_rawlen(L,idx) > 0)  /* non-empty line? */ \
-          add_history(lua_tostring(L, idx));  /* add it to history */
-#define lua_freeline(L,b)	((void)L, free(b))
-
-#elif !defined(lua_readline)
-
+/* These are the definitions if LUA_USE_READLINE is not set. Because
+   readline support may not include history support (and will require
+   defining lua_saveline, use the ! LUA_USE_READLINE se as the
+   default to avoid code repition
+*/
 #define lua_readline(L,b,p) \
         ((void)L, fputs(p, stdout), fflush(stdout),  /* show prompt */ \
         fgets(b, LUA_MAXINPUT, stdin) != NULL)  /* get line */
-#define lua_saveline(L,idx)	{ (void)L; (void)idx; }
-#define lua_freeline(L,b)	{ (void)L; (void)b; }
-
-#endif
+#define lua_saveline(L,idx)     { (void)L; (void)idx; }
+#define lua_freeline(L,b)       { (void)L; (void)b; }
 
 
+#if defined(LUA_USE_READLINE)
 
+#include <stdio.h>
+
+#ifdef HAVE_LIBREADLINE
+#  if defined(HAVE_READLINE_READLINE_H)
+#    include <readline/readline.h>
+#  elif defined(HAVE_READLINE_H)
+#    include <readline.h>
+#  else /* !defined(HAVE_READLINE_H) */
+extern char *readline ();
+#  endif /* !defined(HAVE_READLINE_H) */
+
+#undef lua_readline
+#define lua_readline(L,b,p)	((void)L, ((b)=readline(p)) != NULL)
+
+#undef lua_freeline
+#define lua_freeline(L,b)	((void)L, free(b))
+
+#else /* !defined(HAVE_READLINE_READLINE_H) */
+
+  /* no readline */
+
+#endif /* HAVE_LIBREADLINE */
+
+#ifdef HAVE_READLINE_HISTORY
+#  if defined(HAVE_READLINE_HISTORY_H)
+#    include <readline/history.h>
+#  elif defined(HAVE_HISTORY_H)
+#    include <history.h>
+#  else /* !defined(HAVE_HISTORY_H) */
+extern void add_history ();
+extern int write_history ();
+extern int read_history ();
+
+#  endif /* defined(HAVE_READLINE_HISTORY_H) */
+
+#undef lua_saveline
+#define lua_saveline(L,idx) \
+        if (lua_rawlen(L,idx) > 0)  /* non-empty line? */ \
+          add_history(lua_tostring(L, idx));  /* add it to history */
+
+# else /* ! defined HAVE_READLINE_HISTORY */
+
+/* no history */
+
+
+#endif /* HAVE_READLINE_HISTORY */
+
+#endif /* !defined(LUA_USE_READLINE) */
 
 static lua_State *globalL = NULL;
 
 static const char *progname = LUA_PROGNAME;
-
 
 
 static void lstop (lua_State *L, lua_Debug *ar) {
