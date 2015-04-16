@@ -24,7 +24,7 @@ do
   log(name,g[name],value)
   g[name]=value
  end
- setmetatable(getfenv(),{__index=g,__newindex=set})
+ setmetatable(_ENV,{__index=g,__newindex=set})
 end
 
 -- an example
