@@ -1,21 +1,22 @@
 AC_PREREQ(2.59)
 AC_INIT([Autotoolized Lua], [5.1.5.02], [], [autotoolized-lua])
-
-# keep this separate from PACKAGE_VERSION, as that tracks
-# the autotooled version, not the actual Lua version
-AC_SUBST([LUA_VERSION],[5.1.5])
-AC_SUBST([LUA_MAJOR_VERSION],
-	[`AS_ECHO_N([$LUA_VERSION]) | [sed 's/[.][0-9]*$//']` ]
-)
-
-
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([src/lapi.c])
 
 AM_INIT_AUTOMAKE([1.9 foreign serial-tests])
 
+AC_PROG_SED
 AC_PROG_CC
 AC_PROG_LIBTOOL
+
+# keep this separate from PACKAGE_VERSION, as that tracks
+# the autotooled version, not the actual Lua version
+AC_SUBST([LUA_VERSION],[5.1.5])
+dnl derived from AX_SPLIT_VERSION (see http://www.gnu.org/software/autoconf-archive/ax_split_version.html)
+AC_SUBST([LUA_MAJOR_VERSION],[`AS_ECHO_N([$LUA_VERSION]) | $SED 's/\([[^.]][[^.]]*\).*/\1/'`])
+AC_SUBST([LUA_MINOR_VERSION],[`AS_ECHO_N([$LUA_VERSION]) | $SED 's/[[^.]][[^.]]*.\([[^.]][[^.]]*\).*/\1/'`])
+AC_SUBST([LUA_RELEASE_VERSION],[`AS_ECHO_N([$LUA_VERSION]) | $SED 's/[[^.]][[^.]]*.[[^.]][[^.]]*.\(.*\)/\1/'`])
 
 AC_ARG_WITH(
   [readline],
@@ -67,31 +68,42 @@ AC_SUBST(LUA_BUILD_AS_DLL_DEFS)
 
 AC_SUBST(LUA_LIBS)
 
-VERSIONED_FILES=0
 AC_ARG_ENABLE(
-	[versioned-filenames],
-	[AS_HELP_STRING([--enable-versioned-filenames],
-	                [insert version (${LUA_MAJOR_VERSION}) into file and directory names [default=no]]
+	[versioned-install],
+	[AS_HELP_STRING([--enable-versioned-install],
+	                [add suffix to file and directory names [default=no]]
 			)
 	],
-	[
-	  AS_IF([test "$enableval" = yes],[VERSIONED_FILES=1] )
-	]
+	[],
+	[enable_versioned_install=no]
 )
-AM_CONDITIONAL([VERSIONED_FILES], [test $VERSIONED_FILES = 1])
+AM_CONDITIONAL([VERSIONED_INSTALL], [test "x$enable_versioned_install" != xno])
 
-AM_COND_IF([VERSIONED_FILES],
-	[LUA_PC=lua${LUA_MAJOR_VERSION}.pc
-	 LUA_LIBNAME=lua${LUA_MAJOR_VERSION}
-	 includedir="$includedir/lua${LUA_MAJOR_VERSION}"
+docdir='${datarootdir}/doc/lua'
+AM_COND_IF([VERSIONED_INSTALL],
+	[
+	 suffix=${LUA_MAJOR_VERSION}.${LUA_MINOR_VERSION}
+	 dnl docdir is only lua version dependent; don't append extra suffix
+	 docdir="$docdir${suffix}"
+	 AS_CASE([$enable_versioned_install],
+	         [yes],[],
+		 [suffix=${suffix}${enable_versioned_install}]
+		 )
+	 LUA_PC=lua${suffix}.pc
+	 LUA_LIBNAME=lua${suffix}
+	 LUA_VDIR=${suffix}
+	 includedir="$includedir/lua${suffix}"
+	 AC_SUBST([LUA_VERSIONED_SUFFIX],[$suffix])
 	 ],
 	[LUA_PC=lua.pc
 	 LUA_LIBNAME=lua
+	 LUA_VDIR=${LUA_MAJOR_VERSION}.${LUA_MINOR_VERSION}
 	]
 )
 
 AC_SUBST([LUA_PC])
 AC_SUBST([LUA_LIBNAME])
+AC_SUBST([LUA_VDIR])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile

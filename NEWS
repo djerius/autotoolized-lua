@@ -10,7 +10,7 @@ Important changes in the Autotoolized packaging of Lua 5.1.5
 
   [ENHANCEMENTS]
 
-    * --enabled-versioned-filenames configure option.  library and
+    * --enabled-versioned-install configure option.  library and
       pkg-config files may now have versions incorporated into their
       names. See README.autotool for more information.
 
