@@ -52,20 +52,9 @@
 /* does printf support %aA? */
 #undef LUA_USE_AFORMAT
 
-/* has mkstemp */
-#undef LUA_USE_MKSTEMP
+/* does platform provide _longjmp */
+#undef LUA_USE_ULONGUMP
 
-/* has isatty */
-#undef LUA_USE_ISATTY
-
-/* has popen */
-#undef LUA_USE_POPEN
-
-/* has ulongtmp */
-#undef LUA_USE_ULONGJMP
-
-/* has gmtime_r */
-#undef LUA_USE_GMTIME_R
 
 /*
 @@ LUA_USE_POSIX includes all functionality listed as X/Open System
@@ -73,6 +62,12 @@
 ** CHANGE it (define it) if your system is XSI compatible.
 */
 #undef LUA_USE_POSIX
+#if defined(LUA_USE_POSIX)
+#define LUA_USE_MKSTEMP
+#define LUA_USE_ISATTY
+#define LUA_USE_POPEN
+#define LUA_USE_GMTIME_R
+#endif
 
 
 

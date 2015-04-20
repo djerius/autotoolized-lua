@@ -64,6 +64,11 @@ AS_CASE([$ac_cv_search_dlopen],
 	[LUA_LIBS="${LUA_LIBS} $ac_cv_search_dlopen"]
 )
 
+dnl LUA_USE_ULONGJMP
+AC_CHECK_FUNC([_longjmp],
+           [AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])]
+)
+
 dnl does strtod support 0x?
 AC_MSG_CHECKING([if strtod supports hex input])
 AC_RUN_IFELSE( [AC_LANG_PROGRAM(
@@ -103,8 +108,6 @@ dnl ##################################################################
 dnl POSIX
 
 dnl LUA_USE_POSIX
-dnl most of the functionality exposed by this has been moved into
-dnl capabilities based testing
 
 dnl YES = set all POSIX configuration options
 dnl NO  = don't
@@ -120,12 +123,6 @@ AS_CASE([$enable_posix],
 	[yes],
 	  [
 	    AC_DEFINE([LUA_USE_POSIX],[1],[use posix])
-
-	    AC_DEFINE([LUA_USE_MKSTEMP],[1],[have mkstemp])
-	    AC_DEFINE([LUA_USE_ISATTY],[1],[have isatty])
-	    AC_DEFINE([LUA_USE_POPEN],[1],[have popen])
-	    AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])
-	    AC_DEFINE([LUA_USE_GMTIME_R],[1],[have gmtime_r])
           ],
 	[no],
 	  [ : ],
@@ -133,8 +130,10 @@ AS_CASE([$enable_posix],
 	  [
 	    AC_MSG_CHECKING([if we're on a system known to support POSIX])
 	    AS_CASE([$host],
-	    	    [*-darwin*], [ KNOWN_POSIX=yes ],
-		    [*-linux*],  [ KNOWN_POSIX=yes ],
+	    	    [*-darwin*],  [ KNOWN_POSIX=yes ],
+		    [*-linux*],   [ KNOWN_POSIX=yes ],
+                    [*-freebsd*], [ KNOWN_POSIX=yes ],
+                    [*-openbsd*], [ KNOWN_POSIX=yes ],
 		    [KNOWN_POSIX=no]
 		    )
             AS_CASE([$KNOWN_POSIX],
@@ -146,25 +145,6 @@ AS_CASE([$enable_posix],
        [AC_MSG_ERROR([illegal value for --enable-posix $enable_posix])]
 )
 
-AS_CASE([$enable_posix],
-	[auto],
-	  [
-	    AC_CHECK_FUNC([mkstemp],
-		    [AC_DEFINE([LUA_USE_MKSTEMP],[1],[have mkstemp])])
-
-	    AC_CHECK_FUNC([isatty],
-		    [AC_DEFINE([LUA_USE_ISATTY],[1],[have isatty])])
-
-	    AC_CHECK_FUNC([popen],
-		    [AC_DEFINE([LUA_USE_POPEN],[1],[have popen])])
-
-	    AC_CHECK_FUNC([_longjmp],
-		    [AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])])
-
-	    AC_CHECK_FUNC([gmtime_r],
-		    [AC_DEFINE([LUA_USE_GMTIME_R],[1],[have gmtime_r])])
-	  ]
-)
 
 dnl ##################################################################
 
@@ -183,7 +163,9 @@ AS_IF([test "x$enable_non_ansi" = "xno"],
 
 
 dnl LUA_COMPAT_ALL
-AC_ARG_ENABLE([--compat-all], [Turn on all compatibility options [default=yes]],
+AC_ARG_ENABLE(
+  [compat-all],
+  [AC_HELP_STRING([--enable-compat-all],[Turn on all compatibility options [default=yes]])],
   [],
   [enable_compat_all=yes]
 )

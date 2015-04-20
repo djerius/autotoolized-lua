@@ -28,6 +28,7 @@ The following configuration options are determined automatically
 * `LUA_USE_STRTODHEX`
 * `LUA_USE_AFORMAT`
 * `LUA_USE_DLOPEN`
+* `LUA_USE_ULONGJMP`
 
 
 `LUA_USE_POSIX`
@@ -45,21 +46,14 @@ are unconditionally enabled.
 * if _--enable-posix = no_ or _--disable-posix_ is specified, POSIX
 features are unconditionally enabled.
 
-* if _--enable-posix = auto_ (the default), the following
-configuration options are enabled if supported by the host
+* if _--enable-posix = auto_ (the default), `LUA_USE_POSIX`
+is enabled if the host runs
 
-    * `LUA_USE_MKSTEMP`
-    * `LUA_USE_ISATTY`
-    * `LUA_USE_POPEN`
-    * `LUA_USE_ULONGJMP`
-    * `LUA_USE_GMTIME_R`
+    * GNU/Linux
+    * Mac OS X
+    * FreeBSD
+    * OpenBSD
 
-    The remaining features covered by `LUA_USE_POSIX` are unconditionally enabled
-    if the host runs GNU/Linux or Mac OSX:
-
-    * lauxlib.c: child process state handling for `pclose`
-    * liolib.c: use of `fseeko` and `ftello`
-    * loslib.c: format options used in calls `to strftime`
 
 
 `LUA_ANSI`
