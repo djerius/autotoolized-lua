@@ -16,7 +16,7 @@ lib@LUA_LIBNAME@_la_SOURCES =							\
         ltm.c lundump.c lvm.c lzio.c						\
 										\
 	lauxlib.c lbaselib.c lbitlib.c lcorolib.c ldblib.c liolib.c		\
-	lmathlib.c loslib.c lstrlib.c ltablib.c loadlib.c linit.c		\
+	lmathlib.c loslib.c lstrlib.c ltablib.c lutf8lib.c loadlib.c linit.c	\
 										\
 	lapi.h lcode.h lctype.h ldebug.h ldo.h lfunc.h lgc.h llex.h llimits.h	\
 	lmem.h lobject.h lopcodes.h lparser.h lstate.h lstring.h ltable.h ltm.h	\
@@ -48,9 +48,10 @@ luac_DEPENDENCIES = lib@LUA_LIBNAME@.la
 # don't get exported to the shared object
 luac_LDFLAGS = -static
 
-EXTRA_DIST = luaconf.h.template.in
+EXTRA_DIST = luaconf.h.template.in lua.pc.template.in
 BUILT_SOURCES = luaconf.h
 CLEANFILES = luaconf.h
+DISTCLEANFILES = @LUA_PC@ luaconf.h
 
 # explicitly substitute values into luaconf.h.template
 #
@@ -70,7 +71,12 @@ edit = 	$(SED)					\
 # depend upon config.status in case configure is rerun and one of the
 # substituted values changes.  could depend upon Makefile, but that
 # may get changed for multiple reasons other than changing the values
-luaconf.h : $(builddir)/luaconf.h.template $(top_builddir)/config.status
-	rm -f luaconf.h luaconf.h.tmp
-	$(edit) $(builddir)/luaconf.h.template > luaconf.h.tmp
-	mv luaconf.h.tmp luaconf.h
+luaconf.h : luaconf.h.template $(top_builddir)/config.status
+	rm -f $@ $@.h.tmp
+	$(edit) $(builddir)/$@.template > $@.tmp
+	mv $@.tmp $@
+
+@LUA_PC@ : lua.pc.template  $(top_builddir)/config.status
+	rm -f $@ $@.h.tmp
+	$(edit) lua.pc.template > $@.tmp
+	mv $@.tmp $@

@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Autotoolized Lua], [5.2.4.01], [], [autotoolized-lua])
+AC_INIT([Autotoolized Lua], [5.3.0.01], [], [autotoolized-lua])
 AC_CONFIG_MACRO_DIRS([m4])
 
 AC_CONFIG_HEADERS([config.h])
@@ -252,8 +252,7 @@ AC_SUBST([LUA_VDIR])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 etc/Makefile
-                 etc/lua.pc.template
+                 src/lua.pc.template
                  doc/Makefile
 		 test/Makefile])
 AC_OUTPUT
