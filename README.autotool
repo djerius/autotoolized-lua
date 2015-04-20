@@ -24,10 +24,10 @@ Automated Configuration
 
 The following configuration options are determined automatically
 
-* `LUA_USE_LONGLONG`
 * `LUA_USE_STRTODHEX`
 * `LUA_USE_AFORMAT`
 * `LUA_USE_DLOPEN`
+* `LUA_USE_ULONGJMP`
 
 
 `LUA_USE_POSIX`
@@ -45,34 +45,44 @@ are unconditionally enabled.
 * if _--enable-posix = no_ or _--disable-posix_ is specified, POSIX
 features are unconditionally enabled.
 
-* if _--enable-posix = auto_ (the default), the following
-configuration options are enabled if supported by the host
+* if _--enable-posix = auto_ (the default), `LUA_USE_POSIX` 
+is enabled if the host runs
 
-    * `LUA_USE_MKSTEMP`
-    * `LUA_USE_ISATTY`
-    * `LUA_USE_POPEN`
-    * `LUA_USE_ULONGJMP`
-    * `LUA_USE_GMTIME_R`
-
-    The remaining features covered by `LUA_USE_POSIX` are unconditionally enabled
-    if the host runs GNU/Linux or Mac OSX:
-
-    * lauxlib.c: child process state handling for `pclose`
-    * liolib.c: use of `fseeko` and `ftello`
-    * loslib.c: format options used in calls `to strftime`
+    * GNU/Linux
+    * Mac OS X
+    * FreeBSD
+    * OpenBSD
 
 
-`LUA_ANSI`
-----------
+`LUA_32BITS`
+------------
+This configuration option is exposed via _--enable-32bits_ and
+_--disable-32bits_.
 
-By default Lua will use non-ANSI features.  To disable this, specify
-_--disable-non-ansi_.
+`LUA_C89_NUMBERS`
+-----------------
 
-`LUA_COMPAT_ALL`
---------------
+This configuration option is exposed via _--enable-c89-numbers_ and
+_--disable-c89-numbers_.
 
-This configuration option is exposed via _--enable-compat-all_ and
-_--disable-compat-all_.
+
+`LUA_USE_C89`
+-------------
+
+By default Lua will use non-C89 features.  To disable this, specify
+_--disable-non-C89_.
+
+`LUA_COMPAT_5_2`
+----------------
+
+This configuration option is exposed via _--enable-compat-5_2_ and
+_--disable-compat-5_2_.
+
+`LUA_COMPAT_5_1`
+----------------
+
+This configuration option is exposed via _--enable-compat-5_1_ and
+_--disable-compat-5_1_.
 
 
 Additional Configuration
@@ -101,28 +111,28 @@ on the left, versioned on the right.
 
 {prefix}                                {prefix}
 |-- bin                                 |-- bin
-|   |-- lua                             |   |-- lua -> lua5.2
-|   `-- luac                            |   |-- lua5.2
-|                                       |   |-- luac -> luac5.2
-|                                       |   `-- luac5.2
+|   |-- lua                             |   |-- lua -> lua5.3
+|   `-- luac                            |   |-- lua5.3
+|                                       |   |-- luac -> luac5.3
+|                                       |   `-- luac5.3
 |-- include                             |-- include
-|   |                                   |   `-- lua5.2
+|   |                                   |   `-- lua5.3
 |   |-- lauxlib.h                       |       |-- lauxlib.h
 |   |-- luaconf.h                       |       |-- luaconf.h
 |   |-- lua.h                           |       |-- lua.h
 |   |-- lua.hpp                         |       |-- lua.hpp
 |   `-- lualib.h                        |       `-- lualib.h
 |-- lib                                 |-- lib
-|   |-- liblua-5.2.so                   |   |-- liblua5.2.a
-|   |-- liblua.a                        |   |-- liblua5.2.la
-|   |-- liblua.la                       |   |-- liblua5.2.so -> liblua5.2.so.0.0.0
-|   |-- liblua.so -> liblua-5.2.so      |   |-- liblua5.2.so.0 -> liblua5.2.so.0.0.0
-|   |                                   |   |-- liblua5.2.so.0.0.0
+|   |-- liblua-5.3.so                   |   |-- liblua5.3.a
+|   |-- liblua.a                        |   |-- liblua5.3.la
+|   |-- liblua.la                       |   |-- liblua5.3.so -> liblua5.3.so.0.0.0
+|   |-- liblua.so -> liblua-5.3.so      |   |-- liblua5.3.so.0 -> liblua5.3.so.0.0.0
+|   |                                   |   |-- liblua5.3.so.0.0.0
 |   `-- pkgconfig                       |   `-- pkgconfig
-|       `-- lua.pc                      |       `-- lua5.2.pc
+|       `-- lua.pc                      |       `-- lua5.3.pc
 `-- share                               `-- share
     |-- doc                                 |-- doc
-    |   `-- lua                             |   `-- lua5.2
+    |   `-- lua                             |   `-- lua5.3
     |       |-- ...                         |       |-- ...
     `-- man                                 `-- man
         `-- man1                                `-- man1
@@ -138,28 +148,28 @@ _--enable-versioned-install=-compat_ (on the right)
 
 {prefix}                                         {prefix}
 |-- bin                                          |-- bin
-|   |-- lua -> lua5.2                            |   |-- lua -> lua5.2-compat
-|   |-- lua5.2                                   |   |-- lua5.2-compat
-|   |-- luac -> luac5.2                          |   |-- luac -> luac5.2-compat
-|   `-- luac5.2                                  |   `-- luac5.2-compat
+|   |-- lua -> lua5.3                            |   |-- lua -> lua5.3-compat
+|   |-- lua5.3                                   |   |-- lua5.3-compat
+|   |-- luac -> luac5.3                          |   |-- luac -> luac5.3-compat
+|   `-- luac5.3                                  |   `-- luac5.3-compat
 |-- include                                      |-- include
-|   `-- lua5.2                                   |   `-- lua5.2-compat
+|   `-- lua5.3                                   |   `-- lua5.3-compat
 |       |-- lauxlib.h                            |       |-- lauxlib.h
 |       |-- luaconf.h                            |       |-- luaconf.h
 |       |-- lua.h                                |       |-- lua.h
 |       |-- lua.hpp                              |       |-- lua.hpp
 |       `-- lualib.h                             |       `-- lualib.h
 |-- lib                                          |-- lib
-|   |-- liblua5.2.a                              |   |-- liblua5.2-compat.a
-|   |-- liblua5.2.la                             |   |-- liblua5.2-compat.la
-|   |-- liblua5.2.so -> liblua5.2.so.0.0.0       |   |-- liblua5.2-compat.so -> liblua5.2-compat.so.0.0.0
-|   |-- liblua5.2.so.0 -> liblua5.2.so.0.0.0     |   |-- liblua5.2-compat.so.0 -> liblua5.2-compat.so.0.0.0
-|   |-- liblua5.2.so.0.0.0                       |   |-- liblua5.2-compat.so.0.0.0
+|   |-- liblua5.3.a                              |   |-- liblua5.3-compat.a
+|   |-- liblua5.3.la                             |   |-- liblua5.3-compat.la
+|   |-- liblua5.3.so -> liblua5.3.so.0.0.0       |   |-- liblua5.3-compat.so -> liblua5.3-compat.so.0.0.0
+|   |-- liblua5.3.so.0 -> liblua5.3.so.0.0.0     |   |-- liblua5.3-compat.so.0 -> liblua5.3-compat.so.0.0.0
+|   |-- liblua5.3.so.0.0.0                       |   |-- liblua5.3-compat.so.0.0.0
 |   `-- pkgconfig                                |   `-- pkgconfig
-|       `-- lua5.2.pc                            |       `-- lua5.2-compat.pc
+|       `-- lua5.3.pc                            |       `-- lua5.3-compat.pc
 `-- share                                        `-- share
     |-- doc                                          |-- doc
-    |   `-- lua5.2                                   |   `-- lua5.2
+    |   `-- lua5.3                                   |   `-- lua5.3
     |       |-- ...                                  |       |-- ...
     `-- man                                          `-- man
         `-- man1                                         `-- man1

@@ -15,7 +15,7 @@ AC_PROG_LIBTOOL
 
 # keep this separate from PACKAGE_VERSION, as that tracks
 # the autotooled version, not the actual Lua version
-AC_SUBST([LUA_VERSION],[5.2.4])
+AC_SUBST([LUA_VERSION],[5.3.0])
 dnl derived from AX_SPLIT_VERSION (see http://www.gnu.org/software/autoconf-archive/ax_split_version.html)
 AC_SUBST([LUA_MAJOR_VERSION],[`AS_ECHO_N([$LUA_VERSION]) | $SED 's/\([[^.]][[^.]]*\).*/\1/'`])
 AC_SUBST([LUA_MINOR_VERSION],[`AS_ECHO_N([$LUA_VERSION]) | $SED 's/[[^.]][[^.]]*.\([[^.]][[^.]]*\).*/\1/'`])
@@ -44,12 +44,6 @@ dnl See if various capabilities are present and set Lua configuration
 dnl options
 
 
-dnl long long support ?
-AX_C_LONG_LONG
-AS_IF([test "x$ac_cv_c_long_long" = xyes],
-      [AC_DEFINE([LUA_USE_LONGLONG],[1],[long long type exists])]
-)
-
 dnl LUA_USE_DLOPEN
 dnl find library which contains dlopen
 dnl see https://autotools.io/autoconf/finding.html example 1.3
@@ -62,6 +56,11 @@ AS_CASE([$ac_cv_search_dlopen],
 	[none\ required], [],
 	[no],[],
 	[LUA_LIBS="${LUA_LIBS} $ac_cv_search_dlopen"]
+)
+
+dnl LUA_USE_ULONGJMP
+AC_CHECK_FUNC([_longjmp],
+	    [AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])]
 )
 
 dnl does strtod support 0x?
@@ -103,12 +102,9 @@ dnl ##################################################################
 dnl POSIX
 
 dnl LUA_USE_POSIX
-dnl most of the functionality exposed by this has been moved into
-dnl capabilities based testing
 
 dnl YES = set all POSIX configuration options
 dnl NO  = don't
-dnl AUTO = test what we can, use platform for the rest.
 AC_ARG_ENABLE(
   [posix],
   [AC_HELP_STRING([--enable-posix], [Include all functionality listed as X/Open System Interfaces Extension (XSI) [default=auto]])],
@@ -120,12 +116,6 @@ AS_CASE([$enable_posix],
 	[yes],
 	  [
 	    AC_DEFINE([LUA_USE_POSIX],[1],[use posix])
-
-	    AC_DEFINE([LUA_USE_MKSTEMP],[1],[have mkstemp])
-	    AC_DEFINE([LUA_USE_ISATTY],[1],[have isatty])
-	    AC_DEFINE([LUA_USE_POPEN],[1],[have popen])
-	    AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])
-	    AC_DEFINE([LUA_USE_GMTIME_R],[1],[have gmtime_r])
           ],
 	[no],
 	  [ : ],
@@ -133,8 +123,10 @@ AS_CASE([$enable_posix],
 	  [
 	    AC_MSG_CHECKING([if we're on a system known to support POSIX])
 	    AS_CASE([$host],
-	    	    [*-darwin*], [ KNOWN_POSIX=yes ],
-		    [*-linux*],  [ KNOWN_POSIX=yes ],
+	    	    [*-darwin*],  [ KNOWN_POSIX=yes ],
+		    [*-linux*],   [ KNOWN_POSIX=yes ],
+		    [*-freebsd*], [ KNOWN_POSIX=yes ],
+		    [*-openbsd*], [ KNOWN_POSIX=yes ],
 		    [KNOWN_POSIX=no]
 		    )
             AS_CASE([$KNOWN_POSIX],
@@ -146,50 +138,65 @@ AS_CASE([$enable_posix],
        [AC_MSG_ERROR([illegal value for --enable-posix $enable_posix])]
 )
 
-AS_CASE([$enable_posix],
-	[auto],
-	  [
-	    AC_CHECK_FUNC([mkstemp],
-		    [AC_DEFINE([LUA_USE_MKSTEMP],[1],[have mkstemp])])
-
-	    AC_CHECK_FUNC([isatty],
-		    [AC_DEFINE([LUA_USE_ISATTY],[1],[have isatty])])
-
-	    AC_CHECK_FUNC([popen],
-		    [AC_DEFINE([LUA_USE_POPEN],[1],[have popen])])
-
-	    AC_CHECK_FUNC([_longjmp],
-		    [AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])])
-
-	    AC_CHECK_FUNC([gmtime_r],
-		    [AC_DEFINE([LUA_USE_GMTIME_R],[1],[have gmtime_r])])
-	  ]
-)
 
 dnl ##################################################################
 
-dnl LUA_ANSI
+dnl LUA_32BITS
 AC_ARG_ENABLE(
-  [non-ansi],
-  [AC_HELP_STRING([--enable-non-ansi], [Enable non-ANSI features [default=yes]])],
+  [32bits],
+  [AC_HELP_STRING([--enable-32bits], [Enable 32-bit integers and floats [default=no]])],
   [],
-  [enable_non_ansi=yes]
+  [enable_32bits=no]
 )
 
-AS_IF([test "x$enable_non_ansi" = "xno"],
-      [AC_DEFINE([LUA_ANSI],1,[Disable non-ANSI features])]
+AS_IF([test "x$enable_32bits" = "xyes"],
+      [AC_DEFINE([LUA_32BITS],1,[Enable 32-bit integers and floats ])]
 )
 
-
-
-dnl LUA_COMPAT_ALL
-AC_ARG_ENABLE([--compat-all], [Turn on all compatibility options [default=yes]],
+dnl LUA_USE_C89
+AC_ARG_ENABLE(
+  [non-c89],
+  [AC_HELP_STRING([--enable-non-c89], [Enable non-C89 features [default=yes]])],
   [],
-  [enable_compat_all=yes]
+  [enable_non_c89=yes]
 )
-AS_IF([test $enable_compat_all = yes],
+
+AS_IF([test "x$enable_non_c89" = "xno"],
+      [AC_DEFINE([LUA_USE_C89],1,[Disable non-c89 features])]
+)
+
+dnl LUA_C89_NUMBERS
+AC_ARG_ENABLE(
+  [c89-numbers],
+  [AC_HELP_STRING([--enable-c89-numbers], [Use largest types allowed by C89 for number representation [default=no]])],
+  [],
+  [enable_c89_numbers=no]
+)
+
+AS_IF([test "x$enable_c89_numbers" = "xno"],
+      [AC_DEFINE([LUA_C89_numbers],1,[enable c89 numbers])]
+)
+
+
+dnl LUA_COMPAT_5_2
+AC_ARG_ENABLE([--compat-5.2], [Turn on compatibility options for 5.2 [default=yes]],
+  [],
+  [enable_compat_5_2=yes]
+)
+AS_IF([test $enable_compat_5_2 = yes],
       [
-      AC_DEFINE([LUA_COMPAT_ALL],[1],[turn on all compatibility options])
+      AC_DEFINE([LUA_COMPAT_5_2],[1],[turn on compatibility options for 5.2])
+      ]
+)
+
+dnl LUA_COMPAT_5_1
+AC_ARG_ENABLE([--compat-5.1], [Turn on compatibility options for 5.1 [default=yes]],
+  [],
+  [enable_compat_5_1=yes]
+)
+AS_IF([test $enable_compat_5_1 = yes],
+      [
+      AC_DEFINE([LUA_COMPAT_5_1],[1],[turn on compatibility options for 5.1])
       ]
 )
 
