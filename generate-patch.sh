@@ -4,7 +4,7 @@ set -e
 trap  "cleanup" EXIT
 
 
-while getopts hc:d:Dl:s:o:p:t:x  arg
+while getopts hc:d:D:l:s:o:p:T:t:V:x  arg
 do
     case $arg in
 
@@ -24,6 +24,10 @@ do
 
 	t) tmpdir=$OPTARG ;;
 
+	T) git_tag=$OPTARG ;;
+
+	V) lua_version=$OPTARG ;;
+
         x) set -x ;;
 
         ?) usage=1 ;;
@@ -42,6 +46,34 @@ cleanup () {
 
 }
 
+get_lua_version () {
+
+    lua_version=$(grep '#define LUA_RELEASE' $srcdir/src/lua.h | sed 's/[^0-9.]//g')
+
+}
+
+get_git_tag () {
+    git_tag=$(git tag | grep -F ${lua_version} | sort -r | head -1)
+    if [ "x$tag" = x ]; then
+	echo >&2 "couldn't find a tag for lua version ${lua_version}"
+	exit 1
+    fi
+}
+
+check_git_tag () {
+    tag=$(git tag | grep -F "$git_tag")
+    if [ "x$tag" = x ]; then
+	echo >&2 "'$git_tag' isn't a git tag"
+	exit 1
+    fi
+
+    if [ "${git_tag#$lua_version}" = "${git_tag}" ] ; then
+	echo >&2 "git tag '$git_tag' isn't consistent with Lua version $lua_version"
+	exit 1
+    fi
+}
+
+
 usage () {
 
    cat >&2 <<EOF
@@ -54,6 +86,8 @@ usage: $0 <options>
   -c <command>     compression tool ("none" for none) [$compress]
   -d <dir>         absolute path to directory into which to write the patch [$destdir]
   -D               delete temp directory when done [default=don't]
+  -V <version>     Lua version to patch [default=current checked out branch]
+  -T <tag>         git tag to use to generate patch. [default = latest tag for Lua version]
   -l <file>        absolute path to lua tarball [automatically downloaded]
   -p <command>     patch tool [$makepatch]
   -s <dir>         absolute path to git source directory [$srcdir]
@@ -77,24 +111,37 @@ fi
 # don't initialize until we need it
 : ${tmpdir:=$(mktemp -d)}
 
+echo "Working in $tmpdir"
 cd $tmpdir
 
 GIT_DIR=$srcdir/.git
 export GIT_DIR
 
-lua_version=$(grep '#define LUA_RELEASE' $srcdir/src/lua.h | sed 's/[^0-9.]//g')
-original="lua-${lua_version}"
+# find latest git tag
+if [ "$git_tag" = "" ] ; then
 
-# find latest tag for the specified lua version
-tag=$(git tag | grep -F ${lua_version} | sort -r | head -1)
-if [ "x$tag" = x ]; then
-  echo >&2 "couldn't find a tag for lua version ${lua_version}"
-  exit 1
+    if [ "$lua_version" = "" ] ; then
+	get_lua_version
+    fi
+
+    get_git_tag
+
+else
+    if [ "$lua_version" = "" ] ; then
+
+	lua_version=${git_tag%.[0-9][0-9]}
+
+    fi
+
+    check_git_tag
 fi
 
-echo "Using tag: $tag"
 
-pkg_version=$(echo $tag | sed "s/$lua_version[.]//")
+echo "Lua version: $lua_version"
+echo "Using tag: $git_tag"
+
+original="lua-${lua_version}"
+pkg_version=$(echo $git_tag | sed "s/$lua_version[.]//")
 
 if [ "x$tarball" = x ]; then
   # download lua tarball
@@ -111,10 +158,14 @@ patched="lua-${lua_version}-autotoolize-r${pkg_version}"
 rm -rf $patched
 mkdir $patched
 
-git archive $tag				\
+git archive $git_tag				\
 | tar --exclude-vcs -C $patched -xf -
 
-(cd $patched && sh autogen.sh)
+(cd $patched
+ sh autogen.sh
+ rm -rf autom4te.cache/
+
+)
 
 suffix=
 case "$compress" in
