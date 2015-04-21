@@ -4,7 +4,7 @@ set -e
 trap  "cleanup" EXIT
 
 
-while getopts hc:d:D:l:s:o:p:T:t:V:x  arg
+while getopts hc:d:D:f:l:s:o:p:T:t:V:x  arg
 do
     case $arg in
 
@@ -14,9 +14,11 @@ do
 
 	d) destdir=$OPTARG ;;
 
-	D) cleantmp=1 ;;
+	D) cleantmp=$OPTARG ;;
 
-	l) tarball=$OPTARG ;;
+	f) tarball=$OPTARG ;;
+
+	l) tarballdir=$OPTARG ;;
 
 	p) makepatch=$OPTARG ;;
 
@@ -38,7 +40,7 @@ done
 
 cleanup () {
 
-    if [ "x$cleantmp" = x1 ]; then
+    if [ "$cleantmp" = yes ]; then
 
 	chmod -R +w "$tmpdir"
 	rm -rf "$tmpdir"
@@ -85,10 +87,11 @@ usage: $0 <options>
   -h               print help and exit
   -c <command>     compression tool ("none" for none) [$compress]
   -d <dir>         absolute path to directory into which to write the patch [$destdir]
-  -D               delete temp directory when done [default=don't]
+  -D yes|no           delete temp directory when done [default=yes]
   -V <version>     Lua version to patch [default=current checked out branch]
   -T <tag>         git tag to use to generate patch. [default = latest tag for Lua version]
-  -l <file>        absolute path to lua tarball [automatically downloaded]
+  -f <file>        absolute path to lua tarball [automatically downloaded]
+  -l <dir>	   absolute path to directory to read/write lua tarballs
   -p <command>     patch tool [$makepatch]
   -s <dir>         absolute path to git source directory [$srcdir]
   -t <dir>         temporary directory [${tmpdir:-automatically generated}]
@@ -102,6 +105,7 @@ pwd=$(pwd)
 : ${srcdir:=$pwd}
 : ${destdir:=$pwd}
 : ${compress:=bzip2 -c}
+: ${cleantmp:=yes}
 
 if [ "x$usage" != "x" ]; then
    usage
@@ -138,19 +142,44 @@ fi
 
 
 echo "Lua version: $lua_version"
-echo "Using tag: $git_tag"
+echo "Git tag: $git_tag"
 
 original="lua-${lua_version}"
 pkg_version=$(echo $git_tag | sed "s/$lua_version[.]//")
 
-if [ "x$tarball" = x ]; then
-  # download lua tarball
-  tarball=lua-${lua_version}.tar.gz
-  echo "Downloading $tarball"
-  wget -q http://www.lua.org/ftp/$tarball
+if [ "$tarball" != "" ]; then
+
+  :
+
 else
-  echo "Using $tarball as base"
+
+  tarball=lua-${lua_version}.tar.gz
+
+  if [ "$tarballdir" != "" -a -f "$tarballdir/$tarball" ]; then
+
+      tarball="$tarballdir/$tarball"
+
+  else
+
+     # download lua tarball
+
+      echo "Downloading $tarball"
+
+      url=http://www.lua.org/ftp/$tarball
+
+      if [ "$tarballdir" != "" ]; then
+
+	  tarball="$tarballdir/$tarball"
+
+      fi
+
+      wget -q -O $tarball $url
+
+  fi
+
 fi
+
+echo "Base: $tarball"
 
 tar -xzf $tarball
 
