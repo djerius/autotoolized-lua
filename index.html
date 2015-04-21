@@ -1,33 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Autotoolized-lua by djerius</title>
+    <meta name="description" content="Autotoolized-lua : Autoconf, automake and libtool enabled Lua">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Autotoolized-lua</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Autotoolized-lua</h1>
-        <p>Autoconf, automake and libtool enabled Lua</p>
 
-        <p class="view"><a href="https://github.com/djerius/autotoolized-lua">View the Project on GitHub <small>djerius/autotoolized-lua</small></a></p>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/djerius/autotoolized-lua">View on GitHub</a>
 
+          <h1 id="project_title">Autotoolized-lua</h1>
+          <h2 id="project_tagline">Autoconf, automake and libtool enabled Lua</h2>
 
-        <ul>
-          <li><a href="https://github.com/djerius/autotoolized-lua/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/djerius/autotoolized-lua/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/djerius/autotoolized-lua">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/djerius/autotoolized-lua/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/djerius/autotoolized-lua/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a id="autotoolized-lua" class="anchor" href="#autotoolized-lua" aria-hidden="true"><span class="octicon octicon-link"></span></a>Autotoolized Lua</h1>
 
@@ -41,9 +44,9 @@
 <a id="current-releases" class="anchor" href="#current-releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current releases</h2>
 
 <ul>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.3.0-autotoolize-r01.patch.bz2">lua-5.3.0-autotoolize-r01.patch.bz2</a></li>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.2.4-autotoolize-r01.patch.bz2">lua-5.2.4-autotoolize-r01.patch.bz2</a></li>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.1.5-autotoolize-r02.patch.bz2">lua-5.1.5-autotoolize-r02.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.3.0-autotoolize-r01.patch.bz2">lua-5.3.0-autotoolize-r01.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.2.4-autotoolize-r01.patch.bz2">lua-5.2.4-autotoolize-r01.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.1.5-autotoolize-r02.patch.bz2">lua-5.1.5-autotoolize-r02.patch.bz2</a></li>
 </ul>
 
 <h3>
@@ -65,17 +68,17 @@ patch -p0 &lt; ../lua-${LUAV}-autotoolize-r${PR}.patch
 <a id="use-above-installation-method" class="anchor" href="#use-above-installation-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use above installation method</h3>
 
 <ul>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.1.5-autotoolize-r01.patch.bz2">lua-5.1.5-autotoolize-r01.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.1.5-autotoolize-r01.patch.bz2">lua-5.1.5-autotoolize-r01.patch.bz2</a></li>
 </ul>
 
 <h3>
 <a id="use-old-installation-method-described-below" class="anchor" href="#use-old-installation-method-described-below" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use "Old" installation method described below</h3>
 
 <ul>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.1.4-autotoolize-r1.patch.bz2">lua-5.1.4-autotoolize-r1.patch.bz2</a></li>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.1.3-autotoolize-r1.patch.bz2">lua-5.1.3-autotoolize-r1.patch.bz2</a></li>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.1.2-autotoolize-r1.patch.bz2">lua-5.1.2-autotoolize-r1.patch.bz2</a></li>
-<li><a href="https://github.com/akheron/autotoolized-lua/raw/releases/lua-5.1.1-autotoolize-r1.patch.bz2">lua-5.1.1-autotoolize-r1.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.1.4-autotoolize-r1.patch.bz2">lua-5.1.4-autotoolize-r1.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.1.3-autotoolize-r1.patch.bz2">lua-5.1.3-autotoolize-r1.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.1.2-autotoolize-r1.patch.bz2">lua-5.1.2-autotoolize-r1.patch.bz2</a></li>
+<li><a href="https://github.com/djerius/autotoolized-lua/raw/releases/lua-5.1.1-autotoolize-r1.patch.bz2">lua-5.1.1-autotoolize-r1.patch.bz2</a></li>
 </ul>
 
 <h3>
@@ -101,12 +104,17 @@ chmod +x autogen.sh config.guess config.sub configure depcomp install-sh missing
 <a href="http://search.cpan.org/%7Ejv/makepatch/">makepatch</a> is the preferred patch-generating tool, as it generates shell code to set file permissions.</li>
 </ul>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/djerius">djerius</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Autotoolized-lua maintained by <a href="https://github.com/djerius">djerius</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
