@@ -98,7 +98,7 @@ EOF
 
 pwd=$(pwd)
 
-: ${makepatch:=diff -urN}
+: ${makepatch:=$(if command -v makepatch > /dev/null; then echo makepatch ; else echo  'diff -urN' ; fi ; )}
 : ${srcdir:=$pwd}
 : ${destdir:=$pwd}
 : ${compress:=bzip2 -c}
