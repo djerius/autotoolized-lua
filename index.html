@@ -83,14 +83,13 @@ chmod +x autogen.sh config.guess config.sub configure depcomp install-sh missing
 <h2>
 <a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h2>
 
-<p>The autotoolified source tree is available on <a href="../">GitHub</a></p>
-
 <ul>
 <li>There's a branch for each Lua version.</li>
-<li>Use ./autogen.sh to do the bootstrapping. This creates the configure script and other files needed during the build. </li>
+<li>Use <code>./autogen.sh</code> to do the bootstrapping. This creates the configure script and other files needed during the build. </li>
 <li>Each released patch is related to a tagged commit.</li>
 <li>Patches are created in the releases branch using the <code>generate-patch.sh</code> script.</li>
-<li>(makepatch)[<a href="http://search.cpan.org/%7Ejv/makepatch/">http://search.cpan.org/~jv/makepatch/</a>] is the preferred patch-generating tool, as it generates shell code to set file permissions.</li>
+<li>
+<a href="http://search.cpan.org/%7Ejv/makepatch/">makepatch</a> is the preferred patch-generating tool, as it generates shell code to set file permissions.</li>
 </ul>
 
       <footer class="site-footer">
