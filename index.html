@@ -55,8 +55,8 @@
 <pre><code>LUAV=X.Y.Z  # lua version
 PR=P.Q      # patch release
 tar xf lua-${LUAV}.tar.gz
+bunzip2 lua-${LUAV}-autotoolize-r${PR}.patch.bz2
 cd lua-${LUAV}
-bunzip2 -c ../lua-${LUAV}-autotoolize-r${PR}.patch.bz2
 bash ../lua-${LUAV}-autotoolize-r${PR}.patch
 patch -p0 &lt; ../lua-${LUAV}-autotoolize-r${PR}.patch
 </code></pre>
