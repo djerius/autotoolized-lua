@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Autotoolized-lua by djerius</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Autotoolized-lua</h1>
+      <h2 class="project-tagline">Autoconf, automake and libtool enabled Lua</h2>
+      <a href="https://github.com/djerius/autotoolized-lua" class="btn">View on GitHub</a>
+      <a href="https://github.com/djerius/autotoolized-lua/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/djerius/autotoolized-lua/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="autotoolized-lua" class="anchor" href="#autotoolized-lua" aria-hidden="true"><span class="octicon octicon-link"></span></a>Autotoolized Lua</h1>
+
+<p>After installing the patches (see below), read the <code>README.autotool</code> for more information.  Then run</p>
+
+<p>./configure --help</p>
+
+<p>To see all of the options.</p>
+
+<h2>
+<a id="current-releases" class="anchor" href="#current-releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current releases</h2>
+
+<ul>
+<li><a href="../../raw/releases/lua-5.3.0-autotoolize-r01.patch.bz2">lua-5.3.0-autotoolize-r01.patch.bz2</a></li>
+<li><a href="../../raw/releases/lua-5.2.4-autotoolize-r01.patch.bz2">lua-5.2.4-autotoolize-r01.patch.bz2</a></li>
+<li><a href="../../raw/releases/lua-5.1.5-autotoolize-r02.patch.bz2">lua-5.1.5-autotoolize-r02.patch.bz2</a></li>
+</ul>
+
+<h3>
+<a id="patch-installation" class="anchor" href="#patch-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Patch Installation</h3>
+
+<pre><code>LUAV=X.Y.Z  # lua version
+PR=P.Q      # patch release
+tar xf lua-${LUAV}.tar.gz
+cd lua-${LUAV}
+bunzip2 -c ../lua-${LUAV}-autotoolize-r${PR}.patch.bz2
+bash ../lua-${LUAV}-autotoolize-r${PR}.patch
+patch -p0 &lt; ../lua-${LUAV}-autotoolize-r${PR}.patch
+</code></pre>
+
+<h2>
+<a id="older-releases" class="anchor" href="#older-releases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Older Releases</h2>
+
+<h3>
+<a id="use-above-installation-method" class="anchor" href="#use-above-installation-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use above installation method</h3>
+
+<ul>
+<li><a href="../../raw/releases/lua-5.1.5-autotoolize-r01.patch.bz2">lua-5.1.5-autotoolize-r01.patch.bz2</a></li>
+</ul>
+
+<h3>
+<a id="use-old-installation-method-described-below" class="anchor" href="#use-old-installation-method-described-below" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use "Old" installation method described below</h3>
+
+<ul>
+<li><a href="../../raw/releases/lua-5.1.4-autotoolize-r1.patch.bz2">lua-5.1.4-autotoolize-r1.patch.bz2</a></li>
+<li><a href="../../raw/releases/lua-5.1.3-autotoolize-r1.patch.bz2">lua-5.1.3-autotoolize-r1.patch.bz2</a></li>
+<li><a href="../../raw/releases/lua-5.1.2-autotoolize-r1.patch.bz2">lua-5.1.2-autotoolize-r1.patch.bz2</a></li>
+<li><a href="../../raw/releases/lua-5.1.1-autotoolize-r1.patch.bz2">lua-5.1.1-autotoolize-r1.patch.bz2</a></li>
+</ul>
+
+<h3>
+<a id="old-patch-installation-method" class="anchor" href="#old-patch-installation-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>Old Patch Installation Method</h3>
+
+<pre><code>LUAV=X.Y.Z  # lua version
+PR=P        # patch release
+tar xf lua-${LUAV}.tar.gz
+cd lua-${LUAV}
+bunzip2 -c ../lua-${LUAV}-autotoolize-r${PR}.patch.bz2 | patch -p1
+chmod +x autogen.sh config.guess config.sub configure depcomp install-sh missing
+</code></pre>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development</h2>
+
+<p>The autotoolified source tree is available on <a href="../">GitHub</a></p>
+
+<ul>
+<li>There's a branch for each Lua version.</li>
+<li>Use ./autogen.sh to do the bootstrapping. This creates the configure script and other files needed during the build. </li>
+<li>Each released patch is related to a tagged commit.</li>
+<li>Patches are created in the releases branch using the <code>generate-patch.sh</code> script.</li>
+<li>(makepatch)[<a href="http://search.cpan.org/%7Ejv/makepatch/">http://search.cpan.org/~jv/makepatch/</a>] is the preferred patch-generating tool, as it generates shell code to set file permissions.</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/djerius/autotoolized-lua">Autotoolized-lua</a> is maintained by <a href="https://github.com/djerius">djerius</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
