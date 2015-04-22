@@ -47,14 +47,14 @@ dnl options
 dnl long long support ?
 AX_C_LONG_LONG
 AS_IF([test "x$ac_cv_c_long_long" = xyes],
-      [AC_DEFINE([LUA_USE_LONGLONG],[1],[long long type exists])]
+      [AC_DEFINE([LUA_USE_LONGLONG],[],[long long type exists])]
 )
 
 dnl LUA_USE_DLOPEN
 dnl find library which contains dlopen
 dnl see https://autotools.io/autoconf/finding.html example 1.3
 AC_SEARCH_LIBS([dlopen], [dl dld],
-	       [AC_DEFINE([LUA_USE_DLOPEN],1,[supports dlopen])],
+	       [AC_DEFINE([LUA_USE_DLOPEN],[],[supports dlopen])],
 	       []
 )
 
@@ -66,7 +66,7 @@ AS_CASE([$ac_cv_search_dlopen],
 
 dnl LUA_USE_ULONGJMP
 AC_CHECK_FUNC([_longjmp],
-           [AC_DEFINE([LUA_USE_ULONGJMP],[1],[have _longjmp])]
+           [AC_DEFINE([LUA_USE_ULONGJMP],[],[have _longjmp])]
 )
 
 dnl does strtod support 0x?
@@ -78,7 +78,7 @@ AC_RUN_IFELSE( [AC_LANG_PROGRAM(
 	       ],
 	       [
 	        AC_MSG_RESULT([yes])
-	        AC_DEFINE([LUA_USE_STRTODHEX],1,[System strtod supports hex])
+	        AC_DEFINE([LUA_USE_STRTODHEX],[],[System strtod supports hex])
 	       ],
 	       [
 	        AC_MSG_RESULT([no])
@@ -95,7 +95,7 @@ AC_RUN_IFELSE( [AC_LANG_PROGRAM(
                ],
 	       [
 	        AC_MSG_RESULT([yes])
-	        AC_DEFINE([LUA_USE_AFORMAT],1,[printf supports %aA])
+	        AC_DEFINE([LUA_USE_AFORMAT],[],[printf supports %aA])
 	       ],
 	       [
 	        AC_MSG_RESULT([no])
@@ -122,7 +122,7 @@ AC_ARG_ENABLE(
 AS_CASE([$enable_posix],
 	[yes],
 	  [
-	    AC_DEFINE([LUA_USE_POSIX],[1],[use posix])
+	    AC_DEFINE([LUA_USE_POSIX],[],[use posix])
           ],
 	[no],
 	  [ : ],
@@ -137,7 +137,7 @@ AS_CASE([$enable_posix],
 		    [KNOWN_POSIX=no]
 		    )
             AS_CASE([$KNOWN_POSIX],
-	            [yes], [AC_DEFINE([LUA_USE_POSIX],[1])]
+	            [yes], [AC_DEFINE([LUA_USE_POSIX],[])]
             )
 
 	    AC_MSG_RESULT([$KNOWN_POSIX])
@@ -157,7 +157,7 @@ AC_ARG_ENABLE(
 )
 
 AS_IF([test "x$enable_non_ansi" = "xno"],
-      [AC_DEFINE([LUA_ANSI],1,[Disable non-ANSI features])]
+      [AC_DEFINE([LUA_ANSI],[],[Disable non-ANSI features])]
 )
 
 
@@ -171,7 +171,7 @@ AC_ARG_ENABLE(
 )
 AS_IF([test $enable_compat_all = yes],
       [
-      AC_DEFINE([LUA_COMPAT_ALL],[1],[turn on all compatibility options])
+      AC_DEFINE([LUA_COMPAT_ALL],[],[turn on all compatibility options])
       ]
 )
 
@@ -187,7 +187,7 @@ AC_ARG_WITH(
 )
 AS_IF([test "x$with_readline" != "xno"],
       [
-      AC_DEFINE([LUA_USE_READLINE],1,[Use readline (if available) for interpreter input])
+      AC_DEFINE([LUA_USE_READLINE],[],[Use readline (if available) for interpreter input])
       AX_LIB_READLINE
       ]
 )
