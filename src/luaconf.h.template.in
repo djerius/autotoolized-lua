@@ -11,6 +11,7 @@
 #include <limits.h>
 #include <stddef.h>
 
+#include "luaconf_site.h"
 
 /*
 ** ===================================================================
@@ -33,7 +34,7 @@
 ** ensure that all software connected to Lua will be compiled with the
 ** same configuration.
 */
-#undef LUA_32BITS
+/* #define LUA_32BITS */
 
 
 /*
@@ -41,7 +42,7 @@
 ** Define it if you want Lua to avoid the use of a few C99 features
 ** or Windows-specific features on Windows.
 */
-#undef LUA_USE_C89
+/* #define LUA_USE_C89 */
 
 
 /*
@@ -58,29 +59,25 @@
 #endif
 
 
+#if defined(LUA_USE_LINUX)
+#define LUA_USE_POSIX
+#define LUA_USE_DLOPEN		/* needs an extra library: -ldl */
+#define LUA_USE_READLINE	/* needs some extra libraries */
+#endif
 
-/* has dlopen */
-#undef LUA_USE_DLOPEN
 
-/* has ulongtmp */
-#undef LUA_USE_ULONGJMP
+#if defined(LUA_USE_MACOSX)
+#define LUA_USE_POSIX
+#define LUA_USE_DLOPEN		/* MacOS does not need -ldl */
+#define LUA_USE_READLINE	/* needs an extra library: -lreadline */
+#endif
 
-
-/*
-@@ LUA_USE_POSIX includes all functionality listed as X/Open System
-@* Interfaces Extension (XSI).
-** CHANGE it (define it) if your system is XSI compatible.
-*/
-#undef LUA_USE_POSIX
 
 /*
 @@ LUA_C89_NUMBERS ensures that Lua uses the largest types available for
 ** C89 ('long' and 'double'); Windows always has '__int64', so it does
 ** not need to use this case.
 */
-
-#undef LUA_C89_NUMBERS
-
 #if defined(LUA_USE_C89) && !defined(LUA_USE_WINDOWS)
 #define LUA_C89_NUMBERS
 #endif
@@ -158,7 +155,9 @@
 ** hierarchy or if you want to install your libraries in
 ** non-conventional directories.
 */
-#if defined(_WIN32)	/* { */
+#define LUA_VDIR	"@LUA_VDIR@"
+
+#if defined(_WIN32) 	/* { */
 /*
 ** In Windows, any exclamation mark ('!') in the path is replaced by the
 ** path of the directory of the executable file of the current process.
@@ -178,10 +177,9 @@
 
 #else			/* }{ */
 
-#define LUA_VDIR	"%LUA_VDIR%/"
+#define LUA_LDIR	"%datadir%/" LUA_VDIR "/"
+#define LUA_CDIR	"%libdir%/" LUA_VDIR "/"
 
-#define LUA_LDIR	"%datadir%/" LUA_VDIR
-#define LUA_CDIR	"%libdir%/" LUA_VDIR
 
 #define LUA_PATH_DEFAULT  \
 		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
@@ -280,7 +278,6 @@
 ** You can define it to get all options, or change specific options
 ** to fit your specific needs.
 */
-#undef LUA_COMPAT_5_2
 #if defined(LUA_COMPAT_5_2)	/* { */
 
 /*
@@ -318,7 +315,6 @@
 #endif				/* } */
 
 
-#undef LUA_COMPAT_5_1
 #if defined(LUA_COMPAT_5_1)	/* { */
 
 /*
@@ -609,10 +605,6 @@
 ** leave 'lua_strx2number' undefined and Lua will provide its own
 ** implementation.
 */
-
-/* does strtod support hex 0x?? */
-#undef LUA_USE_STRTODHEX
-
 #if !defined(LUA_USE_C89) || defined(LUA_USE_STRTODHEX)
 #define lua_strx2number(s,p)	lua_str2number(s,p)
 #endif
@@ -623,10 +615,6 @@
 ** Enable it if the C function 'printf' supports these specifiers.
 ** (C99 demands it and Windows also supports it.)
 */
-
-/* does printf support %aA? */
-#undef LUA_USE_AFORMAT
-
 #if !defined(LUA_USE_C89) || defined(LUA_USE_WINDOWS)
 #define LUA_USE_AFORMAT
 #endif

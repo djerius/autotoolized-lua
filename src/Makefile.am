@@ -1,6 +1,6 @@
 AM_CFLAGS = -Wall
 
-include_HEADERS = lua.h luaconf.h lualib.h lauxlib.h lua.hpp
+include_HEADERS = lua.h luaconf.h luaconf_site.h lualib.h lauxlib.h lua.hpp
 
 lib_LTLIBRARIES = lib@LUA_LIBNAME@.la
 
@@ -57,15 +57,11 @@ DISTCLEANFILES = @LUA_PC@ luaconf.h
 # 1. configure doesn't perform a full expansion of values
 #    (e.g. datadir is replaced as the string '${datarootdir}' not its
 #    expansion). make will do that
-#
-# 2. luaconf.h.template is a CONFIG_HEADER, not a CONFIG_FILE, so
-#    its @XXX@ tokens don't get expanded
 
-edit = 	$(SED)					\
-	  -e 's,%datadir%,$(datadir),g'		\
-	  -e 's,%libdir%,$(libdir),g'		\
-	  -e 's,%prefix%,$(prefix),g'		\
-	  -e 's,%LUA_VDIR%,@LUA_VDIR@,g'
+edit = 	$(SED)						\
+	  -e 's,%datadir%,$(datadir),g'			\
+	  -e 's,%libdir%,$(libdir),g'			\
+	  -e 's,%prefix%,$(prefix),g'
 
 # depend upon config.status in case configure is rerun and one of the
 # substituted values changes.  could depend upon Makefile, but that

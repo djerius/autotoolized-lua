@@ -1,0 +1,30 @@
+/* Enable 32-bit integers and floats */
+#undef LUA_32BITS
+
+/* enable c89 numbers */
+#undef LUA_C89_NUMBERS
+
+/* turn on compatibility options for 5.1 */
+#undef LUA_COMPAT_5_1
+
+/* turn on compatibility options for 5.2 */
+#undef LUA_COMPAT_5_2
+
+/* printf supports %aA */
+#undef LUA_USE_AFORMAT
+
+/* Disable non-c89 features */
+#undef LUA_USE_C89
+
+/* supports dlopen */
+#undef LUA_USE_DLOPEN
+
+/* use posix */
+#undef LUA_USE_POSIX
+
+/* System strtod supports hex */
+#undef LUA_USE_STRTODHEX
+
+/* have _longjmp */
+#undef LUA_USE_ULONGJMP
+
