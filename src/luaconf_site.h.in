@@ -1,0 +1,26 @@
+/* Disable non-ANSI features */
+#undef LUA_ANSI
+
+/* turn on all compatibility options */
+#undef LUA_COMPAT_ALL
+
+/* printf supports %aA */
+#undef LUA_USE_AFORMAT
+
+/* supports dlopen */
+#undef LUA_USE_DLOPEN
+
+/* long long type exists */
+#undef LUA_USE_LONGLONG
+
+/* use posix */
+#undef LUA_USE_POSIX
+
+/* Use readline (if available) for interpreter input */
+#undef LUA_USE_READLINE
+
+/* System strtod supports hex */
+#undef LUA_USE_STRTODHEX
+
+/* have _longjmp */
+#undef LUA_USE_ULONGJMP

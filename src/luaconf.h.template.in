@@ -11,6 +11,7 @@
 #include <limits.h>
 #include <stddef.h>
 
+#include "luaconf_site.h"
 
 /*
 ** ==================================================================
@@ -24,7 +25,6 @@
 ** CHANGE it (define it) if you want Lua to avoid the use of any
 ** non-ansi feature or library.
 */
-#undef LUA_ANSI
 #if !defined(LUA_ANSI) && defined(__STRICT_ANSI__)
 #define LUA_ANSI
 #endif
@@ -40,20 +40,25 @@
 #endif
 
 
-/* has dlopen */
-#undef LUA_USE_DLOPEN
 
-/* has long long */
-#undef LUA_USE_LONGLONG
+#if defined(LUA_USE_LINUX)
+#define LUA_USE_POSIX
+#define LUA_USE_DLOPEN		/* needs an extra library: -ldl */
+#define LUA_USE_READLINE	/* needs some extra libraries */
+#define LUA_USE_STRTODHEX	/* assume 'strtod' handles hex formats */
+#define LUA_USE_AFORMAT		/* assume 'printf' handles 'aA' specifiers */
+#define LUA_USE_LONGLONG	/* assume support for long long */
+#endif
 
-/* does strtod support hex 0x?? */
-#undef LUA_USE_STRTODHEX
+#if defined(LUA_USE_MACOSX)
+#define LUA_USE_POSIX
+#define LUA_USE_DLOPEN		/* does not need -ldl */
+#define LUA_USE_READLINE	/* needs an extra library: -lreadline */
+#define LUA_USE_STRTODHEX	/* assume 'strtod' handles hex formats */
+#define LUA_USE_AFORMAT		/* assume 'printf' handles 'aA' specifiers */
+#define LUA_USE_LONGLONG	/* assume support for long long */
+#endif
 
-/* does printf support %aA? */
-#undef LUA_USE_AFORMAT
-
-/* does platform provide _longjmp */
-#undef LUA_USE_ULONGUMP
 
 
 /*
@@ -61,7 +66,6 @@
 @* Interfaces Extension (XSI).
 ** CHANGE it (define it) if your system is XSI compatible.
 */
-#undef LUA_USE_POSIX
 #if defined(LUA_USE_POSIX)
 #define LUA_USE_MKSTEMP
 #define LUA_USE_ISATTY
@@ -95,7 +99,7 @@
 
 #else			/* }{ */
 
-#define LUA_VDIR	"%LUA_VDIR%/"
+#define LUA_VDIR	"@LUA_VDIR@/"
 
 #define LUA_LDIR	"%datadir%/" LUA_VDIR
 #define LUA_CDIR	"%libdir%/" LUA_VDIR
@@ -241,8 +245,6 @@
 ** You can define it to get all options, or change specific options
 ** to fit your specific needs.
 */
-#undef LUA_COMPAT_ALL
-
 #if defined(LUA_COMPAT_ALL)	/* { */
 
 /*

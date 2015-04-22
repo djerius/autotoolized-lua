@@ -3,7 +3,7 @@ AC_INIT([Autotoolized Lua], [5.2.4.01], [], [autotoolized-lua])
 AC_CONFIG_MACRO_DIRS([m4])
 
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_HEADERS([src/luaconf.h.template])
+AC_CONFIG_HEADERS([src/luaconf_site.h])
 AC_CONFIG_SRCDIR([src/lapi.c])
 
 AM_INIT_AUTOMAKE([1.9 foreign serial-tests])
@@ -234,6 +234,7 @@ AC_SUBST([LUA_VDIR])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
+		 src/luaconf.h.template
                  etc/Makefile
                  etc/lua.pc.template
                  doc/Makefile
