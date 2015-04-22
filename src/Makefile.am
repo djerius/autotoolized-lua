@@ -58,8 +58,12 @@ DISTCLEANFILES = @LUA_PC@ luaconf.h
 #    (e.g. datadir is replaced as the string '${datarootdir}' not its
 #    expansion). make will do that
 
+exec_datadir = @exec_datadir@
+exec_datarootdir = @exec_datarootdir@
+
 edit = 	$(SED)						\
 	  -e 's,%datadir%,$(datadir),g'			\
+	  -e 's,%exec_datadir%,$(exec_datadir),g'	\
 	  -e 's,%libdir%,$(libdir),g'			\
 	  -e 's,%prefix%,$(prefix),g'
 

@@ -259,6 +259,21 @@ AC_SUBST([LUA_PC])
 AC_SUBST([LUA_LIBNAME])
 AC_SUBST([LUA_VDIR])
 
+AC_SUBST([exec_datadir],['$(exec_datarootdir)'])
+AC_SUBST([exec_datarootdir],['$(exec_prefix)/share'])
+
+AC_ARG_VAR([LUA_PATH_DEFAULT],[Lua's default search path for Lua libraries])
+
+AS_IF([test "x$LUA_PATH_DEFAULT" != "x"],
+      [AC_DEFINE_UNQUOTED([LUA_PATH_DEFAULT],[$LUA_PATH_DEFAULT],[Lua's default search path for Lua libraries])]
+)
+
+AC_ARG_VAR([LUA_CPATH_DEFAULT],[Lua's default search path for C libraries])
+
+AS_IF([test "x$LUA_CPATH_DEFAULT" != "x"],
+      [AC_DEFINE_UNQUOTED([LUA_CPATH_DEFAULT],[$LUA_CPATH_DEFAULT],[Lua's default search path for C libraries])]
+)
+
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/lua.pc.template
