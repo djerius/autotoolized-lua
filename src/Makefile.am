@@ -1,6 +1,6 @@
 AM_CFLAGS = -Wall
 
-include_HEADERS = lua.h lualib.h lauxlib.h
+include_HEADERS = lua.h luaconf_site.h lualib.h lauxlib.h
 nodist_include_HEADERS = luaconf.h
 
 lib_LTLIBRARIES = lib@LUA_LIBNAME@.la
@@ -57,17 +57,21 @@ readline_defs = @READLINE_DEFS@
 # 1. configure doesn't perform a full expansion of values
 #    (e.g. datadir is replaced as the string '${datarootdir}' not its
 #    expansion). make will do that
-#
 
-edit = 	$(SED)					\
-	  -e 's,%datadir%,$(datadir),g'		\
-	  -e 's,%libdir%,$(libdir),g'		\
+exec_datadir = @exec_datadir@
+exec_datarootdir = @exec_datarootdir@
+
+edit = 	$(SED)						\
+	  -e 's,%datadir%,$(datadir),g'			\
+	  -e 's,%exec_datadir%,$(exec_datadir),g'	\
+	  -e 's,%libdir%,$(libdir),g'			\
 	  -e 's,%LUA_VDIR%,@LUA_VDIR@,g'
 
 # depend upon config.status in case configure is rerun and one of the
 # substituted values changes.  could depend upon Makefile, but that
 # may get changed for multiple reasons other than changing the values
-luaconf.h : $(builddir)/luaconf.h.template $(top_builddir)/config.status
-	rm -f luaconf.h luaconf.h.tmp
-	$(edit) $(builddir)/luaconf.h.template > luaconf.h.tmp
-	mv luaconf.h.tmp luaconf.h
+luaconf.h : luaconf.h.template $(top_builddir)/config.status
+	rm -f $@ $@.h.tmp
+	$(edit) $(builddir)/$@.template > $@.tmp
+	mv $@.tmp $@
+

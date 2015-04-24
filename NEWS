@@ -1,5 +1,10 @@
 Important changes in the Autotoolized packaging of Lua 5.1.5
 
+5.1.5.03
+
+    * LUA_PATH_DEFAULT and LUA_CPATH_DEFAULT may now be set via
+      configure
+
 5.1.5.02	2015-04-21T10:02:59-0400
 
   [INCOMPATIBLE CHANGES]

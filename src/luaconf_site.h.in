@@ -1,0 +1,5 @@
+/* Lua's default search path for C libraries */
+#undef LUA_CPATH_DEFAULT
+
+/* Lua's default search path for Lua libraries */
+#undef LUA_PATH_DEFAULT

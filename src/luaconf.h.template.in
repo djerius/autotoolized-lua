@@ -11,6 +11,8 @@
 #include <limits.h>
 #include <stddef.h>
 
+#include "luaconf_site.h"
+
 /*
 ** =================
 ** Autotoolification
@@ -98,14 +100,23 @@
 
 #define LUA_VDIR	"%LUA_VDIR%/"
 
+#define LUA_ELDIR	"%exec_datadir%/" LUA_VDIR
 #define LUA_LDIR	"%datadir%/" LUA_VDIR
 #define LUA_CDIR	"%libdir%/" LUA_VDIR
+
+#if !defined(LUA_PATH_DEFAULT)
 
 #define LUA_PATH_DEFAULT  \
 		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
 		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"
+
+#endif
+
+#if !defined(LUA_CPATH_DEFAULT)
 #define LUA_CPATH_DEFAULT \
 	"./?.so;"  LUA_CDIR"?.so;" LUA_CDIR"loadall.so"
+#endif
+
 #endif
 
 
