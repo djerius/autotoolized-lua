@@ -6,6 +6,7 @@ AC_CONFIG_SRCDIR([src/lapi.c])
 
 AM_INIT_AUTOMAKE([1.9 foreign serial-tests])
 
+AC_PROG_LN_S
 AC_PROG_SED
 AC_PROG_CC
 AC_PROG_LIBTOOL
