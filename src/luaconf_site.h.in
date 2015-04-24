@@ -4,6 +4,12 @@
 /* turn on all compatibility options */
 #undef LUA_COMPAT_ALL
 
+/* Lua's default search path for C libraries */
+#undef LUA_CPATH_DEFAULT
+
+/* Lua's default search path for Lua libraries */
+#undef LUA_PATH_DEFAULT
+
 /* printf supports %aA */
 #undef LUA_USE_AFORMAT
 

@@ -19,7 +19,6 @@ Lua's configuration is done via C preprocessor macros in `src/luaconf.h`.
 Some of that has been automated, other bits have been exposed via `configure` options
 
 
-
 Automated Configuration
 -----------------------
 
@@ -66,6 +65,33 @@ _--disable-non-ansi_.
 
 This configuration option is exposed via _--enable-compat-all_ and
 _--disable-compat-all_.
+
+
+
+`LUA_PATH_DEFAULT`, `LUA_CPATH_DEFAULT`
+---------------------------------------
+
+These are the filesystem paths Lua searches for Lua and C libraries.
+
+To change the default values, specify these as extra arguments to the
+`configure` command line, e.g.
+
+    ./configure LUA_PATH_DEFAULT="..."  LUA_CPATH_DEFAULT="..."
+
+There are several C preprocesor macros defined which may be of use:
+
+* `LUA_VDIR` - a path component based upon the Lua version and the
+   optional argument to the `--enable-versioned-install` option
+
+* `LUA_LDIR`  => `$(prefix)/share/LUA_VDIR/`
+* `LUA_ELDIR` => `$(exec_prefix)/share/LUA_VDIR/`
+* `LUA_CDIR`  => `$(exec_prefix)/lib/LUA_VDIR/`
+
+To duplicate the default settings (minding the shell's expansion rules and quotes):
+
+    ./configure \
+      LUA_PATH_DEFAULT='LUA_LDIR"?.lua;" LUA_LDIR"?/init.lua;" LUA_CDIR"?.lua;" LUA_CDIR"?/init.lua;" "./?.lua;" "./?/init.lua"' \
+      LUA_CPATH_DEFAULT='LUA_CDIR"?.so;" LUA_CDIR"loadall.so;" "./?.so"'
 
 
 Additional Configuration
