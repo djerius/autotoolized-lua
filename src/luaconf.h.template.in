@@ -101,9 +101,9 @@
 
 #define LUA_VDIR	"@LUA_VDIR@/"
 
-#define LUA_ELDIR	"%exec_datadir%/" LUA_VDIR
-#define LUA_LDIR	"%datadir%/" LUA_VDIR
-#define LUA_CDIR	"%libdir%/" LUA_VDIR
+#define LUA_ELDIR	"%exec_datadir%/lua/" LUA_VDIR
+#define LUA_LDIR	"%datadir%/lua/" LUA_VDIR
+#define LUA_CDIR	"%libdir%/lua/" LUA_VDIR
 
 #if !defined(LUA_PATH_DEFAULT)
 
