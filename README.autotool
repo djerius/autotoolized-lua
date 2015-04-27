@@ -1,7 +1,7 @@
 Overview
 ========
 
-This is a re-packaging of the standard Lua 5.2.4 distribution using
+This is a re-packaging of the standard Lua 5.3.0 distribution using
 the GNU autotools.
 
   * See the `INSTALL.autotool` file for generic information on using `configure`.
