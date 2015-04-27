@@ -33,6 +33,9 @@ LUA_CPATH_DEFAULT='LUA_CDIR"[?].so;"\s+LUA_CDIR"loadall.so;"\s+"./[?].so"'
     subst_is LUA_PC "lua.pc"
     define_is LUA_VDIR '"'"${LUA_V}"'"'
 
+    define_like LUA_LDIR '^"/usr/local/share/lua/"'
+    define_like LUA_CDIR '^"/usr/local/lib/lua/"'
+
     define_like LUA_PATH_DEFAULT "$LUA_PATH_DEFAULT"
     define_like LUA_CPATH_DEFAULT "$LUA_CPATH_DEFAULT"
 
