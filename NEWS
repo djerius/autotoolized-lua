@@ -1,6 +1,19 @@
 Important changes in the Autotoolized packaging of Lua 5.1.5
 
+5.1.5.04
+
+  [BUG FIX]
+
+    * hardcoded Lua and C library paths were missing a "lua" component
+
+
 5.1.5.03	2015-04-27T14:15:17-0400
+
+  [IGNORE THIS RELEASE]
+
+    * This release has an incorrect version in configure.ac.
+
+  [ENHANCEMANT]
 
     * LUA_PATH_DEFAULT and LUA_CPATH_DEFAULT may now be set via
       configure
