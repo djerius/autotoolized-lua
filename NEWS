@@ -1,5 +1,11 @@
 Important changes in the Autotoolized packaging of Lua 5.3.0
 
+5.1.5.03  2015-04-27T18:02:19-0400
+
+  [BUG FIX]
+
+    * hardcoded Lua and C library paths were missing a "lua" component
+
 5.3.0.02	2015-04-27T14:17:24-0400
 
   [IGNORE THIS RELEASE]
