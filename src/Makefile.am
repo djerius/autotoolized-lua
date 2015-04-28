@@ -75,6 +75,9 @@ luaconf.h : luaconf.h.template $(top_builddir)/config.status
 	$(edit) $(builddir)/$@.template > $@.tmp
 	mv $@.tmp $@
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = @LUA_PC@
+
 @LUA_PC@ : lua.pc.template  $(top_builddir)/config.status
 	rm -f $@ $@.h.tmp
 	$(edit) lua.pc.template > $@.tmp
