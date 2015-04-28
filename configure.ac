@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Autotoolized Lua], [5.3.0.03], [], [autotoolized-lua])
+AC_INIT([Autotoolized Lua], [5.3.0.04], [], [autotoolized-lua])
 AC_CONFIG_MACRO_DIRS([m4])
 
 AC_CONFIG_HEADERS([config.h])

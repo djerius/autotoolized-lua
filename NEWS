@@ -1,6 +1,12 @@
 Important changes in the Autotoolized packaging of Lua 5.3.0
 
-5.1.5.03  2015-04-27T18:02:19-0400
+5.3.0.04	2015-04-28T12:53:55-0400
+
+  [PACKING FIX]
+
+    * pkg-config file was not installed
+
+5.3.0.03  2015-04-27T18:02:19-0400
 
   [BUG FIX]
 
